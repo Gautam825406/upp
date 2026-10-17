@@ -1,0 +1,11 @@
+# U++ Academy — coaching classes in Madhygopali, Maharajgunj, serving Chouparan
+User-agent: *
+Allow: /
+
+# AI search and assistants are welcome: we publish factual NAP details only.
+User-agent: GPTBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://uppacademy.in/sitemap.xml

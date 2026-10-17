@@ -1,0 +1,234 @@
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/plus-jakarta-sans';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Base layer: the academy's design system. Dark premium "ink + gold" palette.
+ * Colours, fonts, shadows and keyframes live in tailwind.config.ts; this file adds only the
+ * primitives Tailwind cannot express cleanly.
+ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-ink-950 text-slate-200 font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-slate-50;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: rgba(255, 194, 75, 0.32);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid #ffc24b;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #05070f;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1a2450;
+    border-radius: 999px;
+    border: 2px solid #05070f;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2c3b7a;
+  }
+}
+
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+
+  .glass {
+    @apply rounded-2xl border border-white/[0.08] bg-white/[0.035] backdrop-blur-xl;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05) inset, 0 20px 50px -30px rgba(0, 0, 0, 0.9);
+  }
+
+  .glass-strong {
+    @apply rounded-2xl border border-white/[0.12] bg-ink-800/80 backdrop-blur-2xl;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.07) inset, 0 30px 70px -35px rgba(0, 0, 0, 1);
+  }
+
+  .text-gradient-gold {
+    background-image: linear-gradient(100deg, #ffe3a3 0%, #ffc24b 45%, #f0a723 70%, #ffd479 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-iris {
+    background-image: linear-gradient(100deg, #b3a6ff 0%, #8b7bff 50%, #22d3ee 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .rule-gold {
+    height: 1px;
+    background-image: linear-gradient(90deg, transparent, rgba(255, 194, 75, 0.55), transparent);
+  }
+
+  .bg-dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
+      font-semibold text-ink-950 transition-all duration-300;
+    background-image: linear-gradient(120deg, #ffe3a3 0%, #ffc24b 45%, #f0a723 100%);
+    box-shadow: 0 18px 45px -18px rgba(255, 194, 75, 0.75);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 55px -18px rgba(255, 194, 75, 0.9);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/15
+      bg-white/[0.04] px-6 py-3 font-semibold text-slate-100 backdrop-blur-md transition-colors;
+  }
+  .btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .btn-call {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold
+      text-white transition-all duration-300;
+    background-image: linear-gradient(120deg, #8b7bff 0%, #6d5bff 55%, #4331b0 100%);
+    box-shadow: 0 18px 45px -20px rgba(109, 91, 255, 0.75);
+  }
+  .btn-call:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold
+      text-white transition-all duration-300;
+    background-image: linear-gradient(120deg, #34d399 0%, #10b981 60%, #059669 100%);
+    box-shadow: 0 18px 45px -20px rgba(16, 185, 129, 0.7);
+  }
+  .btn-whatsapp:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-gold-500/[0.08]
+      px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-gold-400;
+  }
+
+  .card-lift {
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease,
+      background-color 0.3s ease;
+  }
+  .card-lift:hover {
+    border-color: rgba(255, 194, 75, 0.25);
+    transform: translateY(-4px);
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]
+      focus:rounded-full focus:bg-gold-500 focus:px-5 focus:py-2.5 focus:text-sm focus:font-bold
+      focus:text-ink-950;
+  }
+
+  .nav-link {
+    @apply relative text-sm font-medium text-slate-300 transition-colors hover:text-white;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    height: 2px;
+    width: 0;
+    background-image: linear-gradient(90deg, #ffc24b, #8b7bff);
+    transition: width 0.3s ease;
+    border-radius: 999px;
+  }
+  .nav-link:hover::after,
+  .nav-link[data-active='true']::after {
+    width: 100%;
+  }
+  .nav-link[data-active='true'] {
+    color: #fff;
+  }
+
+  .faq-summary {
+    list-style: none;
+  }
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    gap: 3rem;
+    animation: marquee 34s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+
+  .glow-ring {
+    position: relative;
+  }
+  .glow-ring::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 194, 75, 0.5), rgba(139, 123, 255, 0.35), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}

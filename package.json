@@ -1,0 +1,43 @@
+{
+  "name": "u-plus-plus-academy",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "U++ Academy - premium coaching website for Classes 1-10 in Madhygopali, Maharajgunj (JAC, CBSE, ICSE) with local SEO and teacher branding.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/prerender.mjs",
+    "build:client": "vite build",
+    "prebuild": "node scripts/generate-sitemap.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "pretypecheck": "node scripts/generate-sitemap.mjs",
+    "seo:check": "node scripts/generate-sitemap.mjs --check"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "clsx": "^2.1.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
