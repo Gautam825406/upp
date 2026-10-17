@@ -19,7 +19,7 @@ const VITE_CONFIG = resolve(ROOT, 'vite.config.ts');
 if (typeof Blob === 'undefined') globalThis.Blob = (await import('node:buffer')).Blob;
 
 const { createServer } = await import('vite');
-const { renderToPipeableStream, toBlob } = await import('react-dom/server');
+const { renderToString } = await import('react-dom/server');
 const React = (await import('react')).default ?? (await import('react'));
 
 // Load the app modules through Vite so tsconfig paths, TSX, and CSS imports all resolve.
@@ -40,8 +40,7 @@ const { Layout } = await ssr('/src/components/layout/Layout.tsx');
 const { PAGE_COMPONENTS, PAGES } = await ssr('/src/routes.ts');
 const { canonicalFor, escapeHtml } = await ssr('/src/components/seo/Seo.tsx');
 const { buildPageSchema } = await ssr('/src/components/seo/schema.ts');
-const router = await ssr('react-router');
-const { StaticRouter } = router;
+const { MemoryRouter } = await import('react-router-dom');
 
 const SITE_URL = 'https://uppacademy.in';
 const TEMPLATE = readFileSync(resolve(DIST, 'index.html'), 'utf8');
@@ -132,24 +131,11 @@ async function buildFullHtml(head, body) {
 async function renderPageHtml(page) {
   const PageComponent = PAGE_COMPONENTS[page.key];
   const element = React.createElement(
-    StaticRouter,
-    { location: page.path },
+    MemoryRouter,
+    { initialEntries: [page.path] },
     React.createElement(Layout, null, React.createElement(PageComponent)),
   );
-
-  return new Promise((resolve, reject) => {
-    let html = '';
-    const { pipe } = renderToPipeableStream(element, {
-      onShellReady() {
-        pipe({
-          write(chunk) { if (chunk) html += String(chunk); return true; },
-          end() { resolve(html); },
-          destroy() { resolve(html); },
-        });
-      },
-      onShellError: reject,
-    });
-  });
+  return renderToString(element);
 }
 
 async function main() {
@@ -163,9 +149,9 @@ async function main() {
     const html = await renderPageHtml(page);
     const outPath = page.path === '/'
       ? resolve(DIST, 'index.html')
-      : resolve(DIST, page.path, 'index.html');
+      : resolve(DIST, page.path.replace(/^\//, ''), 'index.html');
     mkdirSync(dirname(outPath), { recursive: true });
-    const headHtml = buildPageHead(page);
+    const headHtml = await buildPageHead(page);
     const fullHtml = await buildFullHtml(headHtml, html);
     writeFileSync(outPath, fullHtml, 'utf8');
     console.log(`  ✓ ${page.path || '/'} → ${outPath.replace(ROOT + '/', '')}`);
