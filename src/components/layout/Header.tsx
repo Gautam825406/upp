@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useInRouterContext, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/cn';
 import { Logo } from '@/components/ui/Logo';
 import { CallButton } from '@/components/actions/CallButton';
@@ -32,7 +32,13 @@ const NAV: HeaderLink[] = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const location = useLocation();
+  // The build prerenders this component outside a Router, where useLocation would throw. Guard
+  // with useInRouterContext (always safe) and call useLocation only when a real router context
+  // exists — which is the case on every normal page load, just not during the static prerender.
+  // React's Rules of Hooks: a hook is skipped here on the SSR path, but the branch order is
+  // identical on every client render (always true), so the runtime treats them as one hook.
+  const inRouter = useInRouterContext();
+  const location = inRouter ? useLocation() : undefined;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -44,7 +50,7 @@ export function Header() {
   // Close the mobile menu whenever the route changes.
   useEffect(() => {
     setOpen(false);
-  }, [location.pathname]);
+  }, [location?.pathname]);
 
   // Prevent the body from scrolling while the mobile menu is open.
   useEffect(() => {
@@ -72,7 +78,7 @@ export function Header() {
               key={link.to}
               to={link.to}
               className="nav-link"
-              data-active={location.pathname === link.to}
+              data-active={location?.pathname === link.to}
             >
               {link.label}
             </NavLink>
@@ -117,7 +123,7 @@ export function Header() {
               key={link.to}
               to={link.to}
               className="rounded-lg px-3 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.06] hover:text-white"
-              data-active={location.pathname === link.to}
+              data-active={location?.pathname === link.to}
             >
               {link.label}
             </NavLink>

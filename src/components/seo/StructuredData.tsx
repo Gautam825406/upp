@@ -11,7 +11,7 @@
  */
 
 import type { ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useInRouterContext, useLocation } from 'react-router-dom';
 import type { Faq } from '@/data/faqs';
 import { getPageMeta } from '@/routes';
 import {
@@ -49,8 +49,13 @@ export function StructuredData({
   showBreadcrumb = true,
   children,
 }: StructuredDataProps): ReactNode {
-  const location = useLocation();
-  const meta = getPageMeta(location.pathname);
+  // The build prerenders this component outside a Router; guard with useInRouterContext so the
+  // hook below is only called in a real router. Client-side branch order never changes (always
+  // true), so React's hook-count invariant holds.
+  const inRouter = useInRouterContext();
+  const location = inRouter ? useLocation() : undefined;
+  const pathname = location?.pathname ?? '';
+  const meta = getPageMeta(pathname);
 
   const resolvedBreadcrumb = breadcrumb ?? meta?.breadcrumb;
   const resolvedFaqs = faqs ?? [];
@@ -60,12 +65,12 @@ export function StructuredData({
     meta?.path === '/coaching-in-madhygopali';
 
   const pageExtra: JsonLdEntity[] = [...(extra ?? [])];
-  if (location.pathname === '/teachers') {
+  if (pathname === '/teachers') {
     pageExtra.push(...(buildTeacherPersonSchemas() as JsonLdEntity[]));
   }
 
   const blocks: JsonLdEntity[] = buildPageSchema({
-    path: meta?.path ?? location.pathname,
+    path: meta?.path ?? pathname,
     title: meta?.title ?? BUSINESS.name,
     description: meta?.description ?? '',
     breadcrumb: resolvedBreadcrumb,

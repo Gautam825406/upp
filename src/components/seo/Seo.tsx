@@ -13,7 +13,7 @@
  */
 
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useInRouterContext, useLocation } from 'react-router-dom';
 import { getPageMeta } from '@/routes';
 import { BUSINESS, SITE_URL } from '@/data/business';
 
@@ -78,15 +78,19 @@ function setCanonical(url: string): void {
 
 /** Renders nothing. Applies head metadata in the browser. */
 export function Seo({ title, description, canonicalPath, robots, ogType = 'website' }: SeoProps): null {
-  const location = useLocation();
-  const meta = getPageMeta(location.pathname);
+  // The build prerenders this component outside a Router; guard with useInRouterContext so the
+  // hook below is only called in a real router. Client-side branch order never changes (always
+  // true), so React's hook-count invariant holds.
+  const inRouter = useInRouterContext();
+  const location = inRouter ? useLocation() : undefined;
+  const meta = getPageMeta(location?.pathname ?? '');
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
     const resolvedTitle = title || meta?.title || BUSINESS.name;
     const resolvedDescription = description || meta?.description || '';
-    const canonical = canonicalFor(canonicalPath ?? location.pathname);
+    const canonical = canonicalFor(canonicalPath ?? location?.pathname ?? '/');
 
     setTitle(resolvedTitle);
     setMeta('description', resolvedDescription);
@@ -109,7 +113,7 @@ export function Seo({ title, description, canonicalPath, robots, ogType = 'websi
     // Canonical
     setCanonical(canonical);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, description, canonicalPath, robots, ogType, location.pathname]);
+  }, [title, description, canonicalPath, robots, ogType, location?.pathname]);
 
   return null;
 }

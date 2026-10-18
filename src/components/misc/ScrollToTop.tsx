@@ -5,14 +5,18 @@
  */
 
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useInRouterContext, useLocation } from 'react-router-dom';
 
 export function ScrollToTop() {
-  const { pathname } = useLocation();
+  // The build prerenders this component outside a Router; guard with useInRouterContext so the
+  // hook below is only called in a real router. Client-side branch order never changes (always
+  // true), so React's hook-count invariant holds.
+  const inRouter = useInRouterContext();
+  const location = inRouter ? useLocation() : undefined;
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-  }, [pathname]);
+    if (location) window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+  }, [location]);
 
   return null;
 }
