@@ -11,6 +11,7 @@ import { cn } from '@/lib/cn';
 import { Logo } from '@/components/ui/Logo';
 import { CallButton } from '@/components/actions/CallButton';
 import { WhatsAppButton } from '@/components/actions/WhatsAppButton';
+import { ThemeToggle } from '@/components/actions/ThemeToggle';
 import { BUSINESS } from '@/data/business';
 
 interface HeaderLink {
@@ -84,13 +85,14 @@ export function Header() {
             className="hidden md:inline-flex"
             aria-label={`Call ${BUSINESS.name}: ${BUSINESS.phone}`}
           />
+          <ThemeToggle />
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition-colors active:bg-white/[0.1] lg:hidden"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               {open ? (
@@ -107,24 +109,25 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-white/[0.08] bg-ink-950/95 backdrop-blur-xl lg:hidden"
+        className="max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-white/[0.08] bg-ink-950/95 backdrop-blur-xl lg:hidden"
       >
         <nav aria-label="Mobile" className="container-shell flex flex-col py-4">
           {NAV.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
-              className="rounded-lg px-3 py-3 text-base font-medium text-slate-200 hover:bg-white/[0.06] hover:text-white"
+              className="rounded-lg px-3 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.06] hover:text-white"
               data-active={location.pathname === link.to}
             >
               {link.label}
             </NavLink>
           ))}
-          <div className="mt-3 flex gap-3 px-3 pb-2">
-            <CallButton variant="mobile" className="flex-1">
+          {/* The sticky bottom bar already carries Call and WhatsApp on phones. */}
+          <div className="mt-3 hidden gap-3 px-3 pb-2 sm:flex">
+            <CallButton variant="mobile" className="flex-1 py-3">
               Call {BUSINESS.phone}
             </CallButton>
-            <WhatsAppButton variant="mobile" className="flex-1">
+            <WhatsAppButton variant="mobile" className="flex-1 py-3">
               WhatsApp
             </WhatsAppButton>
           </div>

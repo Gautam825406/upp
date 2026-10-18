@@ -21,13 +21,13 @@ export function Boards() {
   return (
     <Section id="boards" subtle>
       <SectionHeading
-        eyebrow="Classes 1 to 10 · All boards"
+        eyebrow="Classes 1 to 12 · All boards"
         title={
           <>
             Coaching for <span className="text-gradient-gold">JAC, CBSE and ICSE</span> students
           </>
         }
-        description="U++ Academy runs coaching across the full school range from Class 1 to Class 10, supporting students from Jharkhand Academic Council, CBSE and ICSE boards."
+        description="U++ Academy runs coaching across the full school range from Class 1 to Class 12, supporting students from Jharkhand Academic Council, CBSE and ICSE boards."
       />
 
       <div className="mt-12 grid gap-5 sm:grid-cols-3">
@@ -69,7 +69,9 @@ export function Boards() {
             Class groups
           </h3>
         </Reveal>
-        <div className="mt-7 grid gap-5 sm:grid-cols-3">
+        {/* Four groups (1-5, 6-10, 11-12 Arts, 11-12 Science): 1-up on phones, 2-up on tablets,
+            4-up on desktop so the row never ends ragged. */}
+        <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {COURSE_GROUPS.map((group, index) => (
             <Reveal key={group.id} delay={index * 100}>
               <Card lift strong className="h-full">

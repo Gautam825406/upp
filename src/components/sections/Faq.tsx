@@ -36,7 +36,7 @@ export function Faq({ faqs, eyebrow = 'FAQ', title = 'Frequently asked questions
                 style={{ borderStyle: 'solid', borderWidth: 1, borderColor: isOpen ? 'rgba(255,194,75,0.25)' : 'rgba(255,255,255,0.08)' }}
               >
                 <summary
-                  className="faq-summary flex cursor-pointer items-center justify-between gap-4 px-6 py-5 transition-colors hover:bg-white/[0.03] sm:px-7"
+                  className="faq-summary flex cursor-pointer items-center justify-between gap-4 px-5 py-5 transition-colors hover:bg-white/[0.03] sm:px-7"
                   onClick={(event) => {
                     event.preventDefault();
                     setOpenId(isOpen ? null : faq.id);
@@ -54,7 +54,7 @@ export function Faq({ faqs, eyebrow = 'FAQ', title = 'Frequently asked questions
                   />
                 </summary>
                 {isOpen && (
-                  <div className="border-t border-white/[0.06] px-6 py-5 text-sm leading-relaxed text-slate-400 sm:px-7 sm:text-[15px]">
+                  <div className="border-t border-white/[0.06] px-5 py-5 text-sm leading-relaxed text-slate-400 sm:px-7 sm:text-[15px]">
                     {faq.answer}
                   </div>
                 )}

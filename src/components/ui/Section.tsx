@@ -16,7 +16,7 @@ interface SectionProps {
 
 export function Section({ children, id, className, subtle = false }: SectionProps) {
   return (
-    <section id={id} className={cn('relative py-20 sm:py-28', subtle && 'bg-ink-900/60', className)}>
+    <section id={id} className={cn('relative py-16 sm:py-24 lg:py-28', subtle && 'bg-ink-900/60', className)}>
       <div className="container-shell">{children}</div>
     </section>
   );
@@ -40,11 +40,13 @@ export function SectionHeading({
   return (
     <Reveal className={cn('max-w-3xl', align === 'center' && 'mx-auto text-center', className)}>
       {eyebrow && <span className="eyebrow">{eyebrow}</span>}
-      <h2 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl lg:text-[2.75rem]">
+      <h2 className="mt-4 text-[1.75rem] font-bold leading-[1.15] tracking-tight sm:mt-5 sm:text-4xl lg:text-[2.75rem]">
         {title}
       </h2>
       {description && (
-        <p className="mt-5 text-base leading-relaxed text-slate-400 sm:text-lg">{description}</p>
+        <p className="mt-4 text-[15px] leading-relaxed text-slate-400 sm:mt-5 sm:text-lg">
+          {description}
+        </p>
       )}
     </Reveal>
   );

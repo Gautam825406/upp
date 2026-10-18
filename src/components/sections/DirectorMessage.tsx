@@ -28,7 +28,7 @@ export function DirectorMessage() {
             "
           </div>
 
-          <blockquote className="space-y-5 text-lg leading-relaxed text-slate-300">
+          <blockquote className="space-y-4 text-[15px] leading-relaxed text-slate-300 sm:space-y-5 sm:text-lg">
             <p>
               At U++ Academy, our focus is straightforward — build strong academic
               foundations and create a supportive learning environment where every
@@ -56,7 +56,8 @@ export function DirectorMessage() {
         </div>
       </Reveal>
 
-      <Reveal delay={200} className="mt-10 flex flex-wrap items-center gap-3">
+      {/* Sticky bar covers this on phones. */}
+      <Reveal delay={200} className="mt-10 hidden flex-wrap items-center gap-3 sm:flex">
         <CallButton>Speak with us</CallButton>
         <WhatsAppButton>Message on WhatsApp</WhatsAppButton>
       </Reveal>

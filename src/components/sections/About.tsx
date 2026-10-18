@@ -41,15 +41,19 @@ export function About() {
         description={`U++ Academy is based in ${LOCATION_LABEL}, Jharkhand. Director Umesh Kumar leads the academy with a focus on strong academic foundations and a supportive learning environment for students in Classes 1 to 10.`}
       />
 
-      <div className="mt-12 grid gap-5 sm:grid-cols-2">
+      <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2">
         {FEATURES.map((feature, index) => (
           <Reveal key={feature.title} delay={index * 100}>
             <Card lift ring>
               <CardIcon tone={index % 2 === 0 ? 'gold' : 'iris'}>
                 <Icon name={feature.icon} />
               </CardIcon>
-              <h3 className="mt-5 text-lg font-bold text-slate-50">{feature.title}</h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{feature.text}</p>
+              <h3 className="mt-4 text-base font-bold text-slate-50 sm:mt-5 sm:text-lg">
+                {feature.title}
+              </h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-slate-400 sm:text-sm">
+                {feature.text}
+              </p>
             </Card>
           </Reveal>
         ))}

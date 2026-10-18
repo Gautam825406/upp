@@ -24,7 +24,7 @@ export function Card({ children, className, lift = false, strong = false, ring =
         strong ? 'glass-strong' : 'glass',
         lift && 'card-lift',
         ring && 'glow-ring',
-        'p-6 sm:p-7',
+        'p-5 sm:p-7',
         className,
       )}
     >

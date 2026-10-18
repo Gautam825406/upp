@@ -1,5 +1,6 @@
 import { StructuredData } from '@/components/seo/StructuredData';
 import { Hero3D } from '@/components/sections/Hero3D';
+import { PromoSection } from '@/components/sections/PromoSection';
 import { About } from '@/components/sections/About';
 import { DirectorMessage } from '@/components/sections/DirectorMessage';
 import { Boards } from '@/components/sections/Boards';
@@ -15,6 +16,7 @@ export default function HomePage() {
   return (
     <StructuredData showBreadcrumb={false}>
       <Hero3D />
+      <PromoSection />
       <About />
       <DirectorMessage />
       <Boards />

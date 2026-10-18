@@ -1,21 +1,185 @@
-@import '@fontsource-variable/manrope';
-@import '@fontsource-variable/plus-jakarta-sans';
+/*
+ * Typography — U++ Academy uses a two-font system:
+ *
+ *   Display  Plus Jakarta Sans  headings, buttons, the wordmark
+ *   Text     Manrope            body copy and UI text
+ *
+ * Both ship as variable fonts (weight 200-800 in one file each), so the whole scale is covered
+ * without separate files per weight.
+ *
+ * Only the latin subset is declared. The packages' default entry points would pull six subsets each
+ * (cyrillic, greek, vietnamese, latin-ext and their italics) — roughly 12 unused font files for a
+ * site whose content is English. This trims the font payload to the two files actually used.
+ * Devanagari or other scripts would need their @font-face added back here.
+ */
+
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /*
- * Base layer: the academy's design system. Dark premium "ink + gold" palette.
- * Colours, fonts, shadows and keyframes live in tailwind.config.ts; this file adds only the
+ * Base layer: the academy's design system. Dark premium "ink + gold" palette, with a full light
+ * theme. Colours, fonts, shadows and keyframes live in tailwind.config.ts; this file adds only the
  * primitives Tailwind cannot express cleanly.
+ *
+ * THEMING
+ * Every brand colour resolves to `rgb(var(--c-*) / <alpha-value>)`, so the light/dark switch is a
+ * pure custom-property swap on <html>. Components never need `dark:` variants — the palette they
+ * reference simply changes value. Default is dark (`.dark` on <html>, written by an inline script
+ * in index.html to avoid a flash); `.light` swaps in the daytime palette below.
+ *
+ * The semantic ramps, from lightest to darkest, are:
+ *   slate-50  headings / strongest text   -> slate-500  faintest text
+ *   ink-950  page background              -> ink-600    the deepest accent surface
  */
 
 @layer base {
+  /* ---- Dark theme (default) ---- */
+  :root,
+  .dark {
+    color-scheme: dark;
+
+    --c-slate-50: 248 250 252;
+    --c-slate-100: 241 245 249;
+    --c-slate-200: 226 232 240;
+    --c-slate-300: 203 213 225;
+    --c-slate-400: 148 163 184;
+    --c-slate-500: 100 116 139;
+    --c-slate-600: 71 85 105;
+
+    --c-ink-950: 5 7 15;
+    --c-ink-900: 7 11 24;
+    --c-ink-800: 11 16 38;
+    --c-ink-700: 17 26 58;
+    --c-ink-600: 26 36 80;
+
+    --c-white: 255 255 255;
+
+    --c-gold-300: 255 227 163;
+    --c-gold-400: 255 212 121;
+    --c-gold-500: 255 194 75;
+    --c-gold-600: 240 167 35;
+    --c-gold-700: 201 134 15;
+
+    --c-iris-300: 179 166 255;
+    --c-iris-400: 139 123 255;
+    --c-iris-500: 109 91 255;
+    --c-iris-600: 86 66 224;
+    --c-iris-700: 67 49 176;
+
+    --c-aqua-300: 147 242 255;
+    --c-aqua-400: 94 230 247;
+    --c-aqua-500: 34 211 238;
+
+    --shadow-glow: 0 0 0 1px rgb(255 255 255 / 0.06), 0 24px 60px -20px rgb(109 91 255 / 0.45);
+    --shadow-gold: 0 18px 45px -18px rgb(255 194 75 / 0.55);
+    --shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.05), 0 20px 50px -30px rgb(0 0 0 / 0.9);
+
+    --gradient-hero:
+      radial-gradient(60% 60% at 20% 20%, rgb(109 91 255 / 0.28) 0%, transparent 60%),
+      radial-gradient(50% 50% at 85% 15%, rgb(255 194 75 / 0.20) 0%, transparent 60%),
+      radial-gradient(70% 70% at 50% 100%, rgb(34 211 238 / 0.12) 0%, transparent 60%);
+    --gradient-mesh: linear-gradient(160deg, #05070f 0%, #0b1026 45%, #111a3a 100%);
+
+    --dot-grid-color: rgb(255 255 255 / 0.055);
+    --surface-glass: 255 255 255;
+    --surface-glass-alpha: 0.035;
+    --surface-border-alpha: 0.08;
+    --surface-inset-alpha: 0.05;
+    --hero-photo-border: 0.4;
+
+    /* Text colour for the solid gold gradient button. It stays dark in both themes because the
+       gold fill itself does not change — inverting it would give white-on-gold. */
+    --c-on-gold: 5 7 15;
+    --c-on-solid: 255 255 255;
+  }
+
+  /* ---- Light theme ---- */
+  .light {
+    color-scheme: light;
+
+    /* Ramps run the other way here: headings are dark, body text is mid-grey. */
+    --c-slate-50: 12 18 32;
+    --c-slate-100: 26 34 52;
+    --c-slate-200: 39 48 68;
+    --c-slate-300: 71 85 105;
+    --c-slate-400: 100 116 139;
+    --c-slate-500: 130 145 165;
+    --c-slate-600: 156 170 188;
+
+    --c-ink-950: 255 255 255;
+    --c-ink-900: 249 250 252;
+    --c-ink-800: 243 244 248;
+    --c-ink-700: 234 237 243;
+    --c-ink-600: 224 229 238;
+
+    /* In light mode "white" utilities mean "ink", i.e. contrast against the page. */
+    --c-white: 12 18 32;
+
+    /* Golds darken so they stay readable as text on a light background. */
+    --c-gold-300: 168 116 12;
+    --c-gold-400: 176 122 16;
+    --c-gold-500: 193 134 20;
+    --c-gold-600: 201 134 15;
+    --c-gold-700: 173 113 13;
+
+    --c-iris-300: 67 49 176;
+    --c-iris-400: 79 60 205;
+    --c-iris-500: 86 66 224;
+    --c-iris-600: 109 91 255;
+    --c-iris-700: 139 123 255;
+
+    --c-aqua-300: 14 116 144;
+    --c-aqua-400: 8 145 178;
+    --c-aqua-500: 34 211 238;
+
+    /* Softer shadows on light backgrounds. */
+    --shadow-glow: 0 0 0 1px rgb(12 18 32 / 0.04), 0 24px 60px -24px rgb(67 49 176 / 0.22);
+    --shadow-gold: 0 18px 45px -20px rgb(193 134 20 / 0.30);
+    --shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.9), 0 20px 45px -32px rgb(12 18 32 / 0.35);
+
+    /* Wash is much fainter over white so the text stays crisp. */
+    --gradient-hero:
+      radial-gradient(60% 60% at 20% 20%, rgb(109 91 255 / 0.14) 0%, transparent 60%),
+      radial-gradient(50% 50% at 85% 15%, rgb(255 194 75 / 0.16) 0%, transparent 60%),
+      radial-gradient(70% 70% at 50% 100%, rgb(34 211 238 / 0.10) 0%, transparent 60%);
+    --gradient-mesh: linear-gradient(160deg, #ffffff 0%, #f7f8fc 45%, #eef1f8 100%);
+
+    --dot-grid-color: rgb(12 18 32 / 0.06);
+    --surface-glass: 12 18 32;
+    --surface-glass-alpha: 0.022;
+    --surface-border-alpha: 0.10;
+    --surface-inset-alpha: 0.5;
+    --hero-photo-border: 0.25;
+
+    --c-on-gold: 255 255 255;
+    --c-on-solid: 255 255 255;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    color-scheme: dark;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -28,11 +192,17 @@
     @apply bg-ink-950 text-slate-200 font-sans antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    /* Slightly relaxed body leading: Manrope sits a little tight at 1.5, and most of the site's
+       copy is 15-18px prose where the extra breathing room reads as more considered. */
+    line-height: 1.65;
   }
 
   h1, h2, h3, h4 {
     @apply font-display text-slate-50;
     text-wrap: balance;
+    /* Variable fonts carry an optical-size axis. Letting the browser set it automatically keeps
+       large headings from looking spindly and small headings from looking crowded. */
+    font-optical-sizing: auto;
   }
 
   ::selection {
@@ -51,15 +221,15 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #05070f;
+    background: var(--c-ink-950);
   }
   ::-webkit-scrollbar-thumb {
-    background: #1a2450;
+    background: var(--c-ink-600);
     border-radius: 999px;
-    border: 2px solid #05070f;
+    border: 2px solid var(--c-ink-950);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #2c3b7a;
+    background: var(--c-iris-500);
   }
 }
 
@@ -69,24 +239,43 @@
   }
 
   .glass {
-    @apply rounded-2xl border border-white/[0.08] bg-white/[0.035] backdrop-blur-xl;
-    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05) inset, 0 20px 50px -30px rgba(0, 0, 0, 0.9);
+    @apply rounded-2xl border backdrop-blur-xl;
+    border-color: rgb(var(--surface-glass) / var(--surface-border-alpha));
+    background-color: rgb(var(--surface-glass) / var(--surface-glass-alpha));
+    box-shadow: var(--shadow-card);
   }
 
   .glass-strong {
-    @apply rounded-2xl border border-white/[0.12] bg-ink-800/80 backdrop-blur-2xl;
-    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.07) inset, 0 30px 70px -35px rgba(0, 0, 0, 1);
+    @apply rounded-2xl border backdrop-blur-2xl;
+    border-color: rgb(var(--surface-glass) / calc(var(--surface-border-alpha) * 1.5));
+    background-color: rgb(var(--c-ink-800) / 0.8);
+    box-shadow: var(--shadow-card);
   }
 
+  /* The colour tokens are space-separated RGB triples ("255 227 163") so Tailwind can apply its
+     own alpha value. A gradient stop needs a real <rgb-color>, so every stop is wrapped in rgb()
+     — passing the bare token here produces an invalid gradient, which fails silently and leaves
+     the text invisible because of `color: transparent`. */
   .text-gradient-gold {
-    background-image: linear-gradient(100deg, #ffe3a3 0%, #ffc24b 45%, #f0a723 70%, #ffd479 100%);
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--c-gold-300)) 0%,
+      rgb(var(--c-gold-500)) 45%,
+      rgb(var(--c-gold-600)) 70%,
+      rgb(var(--c-gold-400)) 100%
+    );
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
   }
 
   .text-gradient-iris {
-    background-image: linear-gradient(100deg, #b3a6ff 0%, #8b7bff 50%, #22d3ee 100%);
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--c-iris-300)) 0%,
+      rgb(var(--c-iris-500)) 50%,
+      rgb(var(--c-aqua-400)) 100%
+    );
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -94,39 +283,41 @@
 
   .rule-gold {
     height: 1px;
-    background-image: linear-gradient(90deg, transparent, rgba(255, 194, 75, 0.55), transparent);
+    background-image: linear-gradient(90deg, transparent, rgb(var(--c-gold-500) / 0.55), transparent);
   }
 
   .bg-dot-grid {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-image: radial-gradient(var(--dot-grid-color) 1px, transparent 1px);
     background-size: 26px 26px;
   }
 
   .btn-primary {
     @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
-      font-semibold text-ink-950 transition-all duration-300;
-    background-image: linear-gradient(120deg, #ffe3a3 0%, #ffc24b 45%, #f0a723 100%);
-    box-shadow: 0 18px 45px -18px rgba(255, 194, 75, 0.75);
+      font-semibold text-onGold transition-all duration-300;
+    background-image: linear-gradient(120deg, rgb(var(--c-gold-300)) 0%, rgb(var(--c-gold-500)) 45%, rgb(var(--c-gold-600)) 100%);
+    box-shadow: var(--shadow-gold);
   }
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 24px 55px -18px rgba(255, 194, 75, 0.9);
+    box-shadow: 0 24px 55px -18px rgb(var(--c-gold-500) / 0.55);
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/15
-      bg-white/[0.04] px-6 py-3 font-semibold text-slate-100 backdrop-blur-md transition-colors;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3
+      font-semibold text-slate-100 backdrop-blur-md transition-colors;
+    border-color: rgb(var(--surface-glass) / calc(var(--surface-border-alpha) * 1.9));
+    background-color: rgb(var(--surface-glass) / var(--surface-glass-alpha));
   }
   .btn-ghost:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgb(var(--surface-glass) / calc(var(--surface-border-alpha) * 3.5));
+    background-color: rgb(var(--surface-glass) / calc(var(--surface-glass-alpha) * 2.2));
   }
 
   .btn-call {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold
-      text-white transition-all duration-300;
-    background-image: linear-gradient(120deg, #8b7bff 0%, #6d5bff 55%, #4331b0 100%);
-    box-shadow: 0 18px 45px -20px rgba(109, 91, 255, 0.75);
+      text-onSolid transition-all duration-300;
+    background-image: linear-gradient(120deg, rgb(var(--c-iris-400)) 0%, rgb(var(--c-iris-500)) 55%, rgb(var(--c-iris-700)) 100%);
+    box-shadow: 0 18px 45px -20px rgb(var(--c-iris-500) / 0.55);
   }
   .btn-call:hover {
     transform: translateY(-2px);
@@ -134,9 +325,9 @@
 
   .btn-whatsapp {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold
-      text-white transition-all duration-300;
+      text-onSolid transition-all duration-300;
     background-image: linear-gradient(120deg, #34d399 0%, #10b981 60%, #059669 100%);
-    box-shadow: 0 18px 45px -20px rgba(16, 185, 129, 0.7);
+    box-shadow: 0 18px 45px -20px rgb(16 185 129 / 0.5);
   }
   .btn-whatsapp:hover {
     transform: translateY(-2px);
@@ -158,6 +349,45 @@
   .card-lift:hover {
     border-color: rgba(255, 194, 75, 0.25);
     transform: translateY(-4px);
+  }
+  /* Touch devices never fire :hover, so give them a press state instead of a dead card. */
+  .card-lift:active {
+    border-color: rgba(255, 194, 75, 0.3);
+    transform: translateY(-1px) scale(0.994);
+  }
+
+  /* Reserve room for the fixed bottom action bar so it never covers the last
+     line of content on phones. No-op on desktop, where the bar is hidden. */
+  .pb-action-bar {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 1024px) {
+    .pb-action-bar {
+      padding-bottom: 0;
+    }
+  }
+
+  /* Soft aurora wash behind the hero. Pure CSS so it costs nothing on mobile. */
+  .aurora {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(56px);
+    pointer-events: none;
+    animation: aurora-drift 9s ease-in-out infinite;
+  }
+  @keyframes aurora-drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(0, -18px, 0) scale(1.08); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .aurora {
+      animation: none;
+    }
+  }
+  /* The accent hues darken in light mode, so at full strength they read as grey smudges on
+     white. Halve them so the hero stays airy instead of muddy. */
+  .light .aurora {
+    opacity: 0.45;
   }
 
   .skip-link {
@@ -216,7 +446,7 @@
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(255, 194, 75, 0.5), rgba(139, 123, 255, 0.35), transparent 60%);
+    background: linear-gradient(135deg, rgb(var(--c-gold-500) / 0.5), rgb(var(--c-iris-400) / 0.35), transparent 60%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;

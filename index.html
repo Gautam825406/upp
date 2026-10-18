@@ -1,9 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0b1026" />
+
+    <!--
+      Apply the saved theme before first paint.
+
+      This has to run inline and synchronously, before the stylesheet paints, otherwise a returning
+      visitor who chose light mode would see a flash of the dark theme. Dark is the default, and
+      the markup below ships `class="dark"` so the no-JS path still renders correctly.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('upp-theme');
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark';
+          var el = document.documentElement;
+          el.classList.toggle('light', theme === 'light');
+          el.classList.toggle('dark', theme === 'dark');
+          el.style.colorScheme = theme;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#f8fafc' : '#0b1026');
+        } catch (e) {
+          /* storage blocked — fall through to the dark default on the <html> tag */
+        }
+      })();
+    </script>
 
     <!--
       Primary SEO tags. The values below are the HOMEPAGE defaults so that the static HTML is

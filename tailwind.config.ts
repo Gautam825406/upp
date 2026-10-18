@@ -1,6 +1,18 @@
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
+/**
+ * Palette indirection for theming.
+ *
+ * Every brand colour is emitted as `rgb(var(--c-*) / <alpha-value>)` rather than a literal hex.
+ * The actual RGB triples live in src/styles/index.css as custom properties and are swapped by the
+ * `.dark` class on <html>. That means light/dark theming is a variable swap — no `dark:` variants
+ * are needed on components, and the `white` scale can invert with the theme so the many
+ * `border-white/10` / `text-white` usages (which are really "contrast against the page" rather
+ * than literal white) keep working in both themes.
+ */
+const themed = (token: string) => `rgb(var(${token}) / <alpha-value>)`;
+
 const config: Config = {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
@@ -8,35 +20,51 @@ const config: Config = {
     // academy's own brand colours, fonts, shadows and motion.
     extend: {
       colors: {
-        /* Deep ink-navy background system */
-        ink: {
-          950: '#05070f',
-          900: '#070b18',
-          800: '#0b1026',
-          700: '#111a3a',
-          600: '#1a2450',
+        /* Light text ramp on dark surfaces. Values are theme-swapped; see index.css. */
+        slate: {
+          50: themed('--c-slate-50'),
+          100: themed('--c-slate-100'),
+          200: themed('--c-slate-200'),
+          300: themed('--c-slate-300'),
+          400: themed('--c-slate-400'),
+          500: themed('--c-slate-500'),
+          600: themed('--c-slate-600'),
         },
+        /* Deep ink-navy background system. These invert to near-white in light mode. */
+        ink: {
+          950: themed('--c-ink-950'),
+          900: themed('--c-ink-900'),
+          800: themed('--c-ink-800'),
+          700: themed('--c-ink-700'),
+          600: themed('--c-ink-600'),
+        },
+        /* Literal white is really "contrasting against the page" throughout the UI. */
+        white: themed('--c-white'),
+        /* Text that sits on a solid gold fill — stays dark in light mode. */
+        onGold: themed('--c-on-gold'),
+        /* Text that sits on a saturated indigo/green gradient fill — always white. */
+        onSolid: themed('--c-on-solid'),
         /* Primary brand: warm gold -> "premium education" */
         gold: {
-          300: '#ffe3a3',
-          400: '#ffd479',
-          500: '#ffc24b',
-          600: '#f0a723',
-          700: '#c9860f',
+          300: themed('--c-gold-300'),
+          400: themed('--c-gold-400'),
+          500: themed('--c-gold-500'),
+          600: themed('--c-gold-600'),
+          700: themed('--c-gold-700'),
         },
         /* Secondary brand: electric indigo */
         iris: {
-          300: '#b3a6ff',
-          400: '#8b7bff',
-          500: '#6d5bff',
-          600: '#5642e0',
-          700: '#4331b0',
+          300: themed('--c-iris-300'),
+          400: themed('--c-iris-400'),
+          500: themed('--c-iris-500'),
+          600: themed('--c-iris-600'),
+          700: themed('--c-iris-700'),
         },
         /* Tertiary accent used sparingly for CTAs */
         aqua: {
-          300: '#93f2ff',
-          400: '#5ee6f7',
-          500: '#22d3ee',
+          300: themed('--c-aqua-300'),
+          400: themed('--c-aqua-400'),
+          500: themed('--c-aqua-500'),
         },
       },
       fontFamily: {
@@ -44,14 +72,14 @@ const config: Config = {
         display: ['"Plus Jakarta Sans Variable"', ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
-        glow: '0 0 0 1px rgba(255,255,255,0.06), 0 24px 60px -20px rgba(109,91,255,0.45)',
-        gold: '0 18px 45px -18px rgba(255,194,75,0.55)',
-        card: '0 1px 0 0 rgba(255,255,255,0.05) inset, 0 20px 50px -30px rgba(0,0,0,0.9)',
+        // Shadows need to soften in light mode, where a heavy black shadow reads as smudge.
+        glow: 'var(--shadow-glow)',
+        gold: 'var(--shadow-gold)',
+        card: 'var(--shadow-card)',
       },
       backgroundImage: {
-        'hero-gradient':
-          'radial-gradient(60% 60% at 20% 20%, rgba(109,91,255,0.28) 0%, transparent 60%), radial-gradient(50% 50% at 85% 15%, rgba(255,194,75,0.20) 0%, transparent 60%), radial-gradient(70% 70% at 50% 100%, rgba(34,211,238,0.12) 0%, transparent 60%)',
-        'mesh-navy': 'linear-gradient(160deg, #05070f 0%, #0b1026 45%, #111a3a 100%)',
+        'hero-gradient': 'var(--gradient-hero)',
+        'mesh-navy': 'var(--gradient-mesh)',
       },
       keyframes: {
         'fade-up': {

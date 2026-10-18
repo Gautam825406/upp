@@ -37,10 +37,10 @@ export const COURSE_GROUPS: CourseGroup[] = [
     id: 'middle',
     label: 'Middle School',
     from: 6,
-    to: 8,
-    rangeLabel: 'Class 6 – 8',
+    to: 10,
+    rangeLabel: 'Class 6 – 10',
     summary:
-      'Classes 6 to 8 are where school subjects multiply and board syllabi get demanding. Concept clarity matters more here than ever.',
+      'Classes 6 to 10 are where school subjects multiply and board syllabi get demanding. Concept clarity matters more here than ever.',
     points: [
       'Concept clarity across all board subjects',
       'Exam preparation aligned to JAC, CBSE and ICSE syllabi',
@@ -49,18 +49,33 @@ export const COURSE_GROUPS: CourseGroup[] = [
     ],
   },
   {
-    id: 'secondary',
-    label: 'Secondary',
-    from: 9,
-    to: 10,
-    rangeLabel: 'Class 9 – 10',
+    id: 'arts',
+    label: 'Senior Secondary · Arts',
+    from: 11,
+    to: 12,
+    rangeLabel: 'Class 11 – 12 Arts',
     summary:
-      'Classes 9 and 10 shape the path a student takes next. U++ Academy focuses on thorough understanding and steady improvement rather than shortcuts.',
+      'For students moving into the Arts stream in Class 11 and 12, with teaching that builds on the foundations laid in school.',
     points: [
-      'Board-aligned preparation for JAC, CBSE and ICSE',
+      'Board-aligned preparation for Arts stream subjects',
+      'Concept clarity rather than memorisation',
       'Focused revision and regular self-assessment',
-      'Extra support for weak students working towards improvement',
-      'Academic guidance conversations for parents',
+      'Guidance conversations for parents',
+    ],
+  },
+  {
+    id: 'science',
+    label: 'Senior Secondary · Science',
+    from: 11,
+    to: 12,
+    rangeLabel: 'Class 11 – 12 Science',
+    summary:
+      'Science in Class 11 and 12 demands a different depth of understanding. U++ Academy supports students through that shift.',
+    points: [
+      'Board-aligned preparation for Science stream subjects',
+      'Thorough understanding instead of shortcuts',
+      'Focused revision and regular self-assessment',
+      'Extra support for students who want to strengthen a weak subject',
     ],
   },
 ];

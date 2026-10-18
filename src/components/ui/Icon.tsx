@@ -33,7 +33,13 @@ export type IconName =
   | 'compass'
   | 'external'
   | 'plus'
-  | 'minus';
+  | 'minus'
+  | 'sun'
+  | 'moon'
+  | 'volume'
+  | 'volume-off'
+  | 'play'
+  | 'replay';
 
 const PATHS: Record<IconName, ReactNode> = {
   phone: (
@@ -83,6 +89,37 @@ const PATHS: Record<IconName, ReactNode> = {
   external: <path d="M14 3h7v7h-2V6.4l-8 8-1.4-1.4 8-8H14V3ZM5 5h8v2H7v10h10v-6h2v8H5V5Z" fill="currentColor" />,
   plus: <path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z" fill="currentColor" />,
   minus: <path d="M5 11h14v2H5z" fill="currentColor" />,
+  sun: (
+    <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <circle cx="12" cy="12" r="4.2" fill="currentColor" stroke="none" />
+      <path d="M12 2.4v2.3M12 19.3v2.3M2.4 12h2.3M19.3 12h2.3M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6" />
+    </g>
+  ),
+  moon: (
+    <path
+      d="M20.2 14.6a8.4 8.4 0 0 1-10.8-10.8.9.9 0 0 0-1.2-1.2A10.2 10.2 0 1 0 21.4 15.8a.9.9 0 0 0-1.2-1.2Z"
+      fill="currentColor"
+    />
+  ),
+  volume: (
+    <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 9.5h3.2L12 5.4v13.2L7.2 14.5H4a.9.9 0 0 1-.9-.9V10.4a.9.9 0 0 1 .9-.9Z" fill="currentColor" stroke="none" />
+      <path d="M15.6 9.4a3.7 3.7 0 0 1 0 5.2M18.3 6.8a7.3 7.3 0 0 1 0 10.4" />
+    </g>
+  ),
+  'volume-off': (
+    <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 9.5h3.2L12 5.4v13.2L7.2 14.5H4a.9.9 0 0 1-.9-.9V10.4a.9.9 0 0 1 .9-.9Z" fill="currentColor" stroke="none" />
+      <path d="m16.2 9.6 4.6 4.8M20.8 9.6l-4.6 4.8" />
+    </g>
+  ),
+  play: <path d="M7.5 5.2 19 12 7.5 18.8V5.2Z" fill="currentColor" />,
+  replay: (
+    <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20.4 12a8.4 8.4 0 1 1-2.6-6.1" />
+      <path d="M20.6 4.2v4.6H16" />
+    </g>
+  ),
 };
 
 interface IconProps {

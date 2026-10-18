@@ -75,7 +75,7 @@ export function Locations() {
                     </span>
                   )}
                 </div>
-                <h3 className="mt-5 text-xl font-bold text-slate-50">{location.heading}</h3>
+                <h3 className="mt-5 text-lg font-bold text-slate-50 sm:text-xl">{location.heading}</h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{location.blurb}</p>
                 <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-400 transition-colors hover:text-gold-300">
                   Learn more

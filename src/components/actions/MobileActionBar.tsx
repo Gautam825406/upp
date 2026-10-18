@@ -19,7 +19,7 @@ export function MobileActionBar() {
       <div className="mx-auto flex max-w-md gap-2.5">
         <a
           href={TEL_HREF}
-          className="btn-call flex-1 py-2.5 text-sm"
+          className="btn-call flex-1 py-3 text-sm active:scale-[0.98]"
           aria-label={`Call ${BUSINESS.name} at ${BUSINESS.phone}`}
         >
           <Icon name="phone" className="h-4 w-4" />
@@ -29,7 +29,7 @@ export function MobileActionBar() {
           href={whatsappHref()}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-whatsapp flex-1 py-2.5 text-sm"
+          className="btn-whatsapp flex-1 py-3 text-sm active:scale-[0.98]"
           aria-label={`Message ${BUSINESS.name} on WhatsApp`}
         >
           <Icon name="whatsapp" className="h-4 w-4" />

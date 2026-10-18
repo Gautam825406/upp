@@ -21,19 +21,19 @@ export function CtaBanner({
       />
       <div className="absolute inset-0 bg-ink-950/65" />
       <div className="container-shell relative z-10">
-        <div className="glass-strong mx-auto max-w-4xl rounded-3xl p-8 sm:p-14">
-          <div className="glow-ring rounded-2xl px-6 py-8 sm:px-10 sm:py-11">
+        <div className="glass-strong mx-auto max-w-4xl rounded-3xl p-5 sm:p-14">
+          <div className="glow-ring rounded-2xl px-1 py-6 sm:px-10 sm:py-11">
             <Reveal>
               <span className="eyebrow">{LOCATION_LABEL} · {BUSINESS.name}</span>
-              <h2 className="mt-6 text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+              <h2 className="mt-5 text-[1.65rem] font-extrabold leading-[1.15] tracking-tight sm:mt-6 sm:text-5xl">
                 <span className="text-gradient-gold">{title}</span>
               </h2>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
+              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-slate-300 sm:mt-5 sm:text-lg">
                 {description}
               </p>
             </Reveal>
             <Reveal delay={180}>
-              <div className="mt-9 flex flex-wrap items-center gap-3.5">
+              <div className="mt-8 hidden sm:mt-9 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5">
                 <WhatsAppButton
                   message={`Hello ${BUSINESS.name}, I would like to know about admission for my child.`}
                 >

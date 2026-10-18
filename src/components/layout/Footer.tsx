@@ -38,7 +38,7 @@ export function Footer() {
   return (
     <footer className="relative border-t border-white/[0.08] bg-ink-900">
       <div className="bg-dot-grid absolute inset-0 opacity-40" aria-hidden="true" />
-      <div className="container-shell relative py-14">
+      <div className="container-shell relative py-14 pb-action-bar">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Logo />
