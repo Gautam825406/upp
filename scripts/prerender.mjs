@@ -7,6 +7,7 @@
 // JSON-LD structured data baked into the <head> — so crawlers never need JavaScript.
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { Writable } from 'node:stream';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,12 +20,10 @@ const VITE_CONFIG = resolve(ROOT, 'vite.config.ts');
 if (typeof Blob === 'undefined') globalThis.Blob = (await import('node:buffer')).Blob;
 
 const { createServer } = await import('vite');
-const { renderToPipeableStream, toBlob } = await import('react-dom/server');
+const { renderToPipeableStream } = await import('react-dom/server');
 const React = (await import('react')).default ?? (await import('react'));
 
 // Load the app modules through Vite so tsconfig paths, TSX, and CSS imports all resolve.
-const mod = async (id) => (await createServer({ configFile: VITE_CONFIG, logLevel: 'silent' })).ssrLoadModule(id);
-
 let _server;
 async function ssr(id) {
   _server ??= await createServer({
@@ -38,12 +37,18 @@ async function ssr(id) {
 
 const { Layout } = await ssr('/src/components/layout/Layout.tsx');
 const { PAGE_COMPONENTS, PAGES } = await ssr('/src/routes.ts');
-const { canonicalFor, escapeHtml } = await ssr('/src/components/seo/Seo.tsx');
-const { buildPageSchema } = await ssr('/src/components/seo/schema.ts');
-const router = await ssr('react-router');
-const { StaticRouter } = router;
+const { canonicalFor } = await ssr('/src/components/seo/Seo.tsx');
+const seoSchema = await ssr('/src/components/seo/schema.ts');
+const { buildPageSchema } = seoSchema;
+const { buildTeacherPersonSchemas } = seoSchema;
+// Load react-router via a bare Node import (NOT through Vite's SSR module graph).
+// Vite SSR-loads `react` under the project name ("react"), but react-router's own
+// module-graph instance sees it under its own name, so contexts and components from the two
+// instances don't interoperate — every <Link> rendered under a Vite-SSR-loaded StaticRouter
+// throws "Cannot destructure property 'basename'". A bare `import` keeps the whole router
+// chain on Node's default resolver, which matches the plain `react` import above.
+const { StaticRouter } = await import('react-router');
 
-const SITE_URL = 'https://uppacademy.in';
 const TEMPLATE = readFileSync(resolve(DIST, 'index.html'), 'utf8');
 const HEAD_RE = /<head[^>]*>([\s\S]*)<\/head>/i;
 const BODY_RE = /<body[^>]*>([\s\S]*)<\/body>/i;
@@ -51,12 +56,28 @@ const BODY_RE = /<body[^>]*>([\s\S]*)<\/body>/i;
 const headMatch = TEMPLATE.match(HEAD_RE);
 const bodyMatch = TEMPLATE.match(BODY_RE);
 const ORIGINAL_HEAD = headMatch ? headMatch[1] : '';
-const ORIGINAL_BODY = bodyMatch ? bodyMatch[1] : '';
 
 // Extract the module scripts that Vite placed in the head (for client-side hydration).
+// Vite rewrites `<script type="module" src="/src/main.tsx">` into hashed asset
+// references like `<script type="module" src="/assets/index-xxxx.js">` and injects
+// them into <head>. These must be preserved so the browser can hydrate the SSR'd markup.
 const HEAD_SCRIPTS = [...ORIGINAL_HEAD.matchAll(/<script[^>]*\/?>([\s\S]*?)<\/script>/gi)].map(m => m[0]);
-// Keep all non-script head content (meta, links, styles, etc.)
-const HEAD_NON_SCRIPT = ORIGINAL_HEAD.replace(/<script[^>]*\/?>([\s\S]*?)<\/script>/gi, '').trim();
+// Non-script head content that survives across all routes (font preloads, theme init, etc.).
+// Strips hardcoded SEO tags (title, description, canonical, OG, Twitter) — buildPageHead
+// emits route-specific replacements for those. Everything else (inline theme-init script,
+// font links, favicon) is kept here so it isn't lost.
+// Strip the template's hardcoded SEO tags — buildPageHead emits route-specific replacements
+// for each one. Also removes all <script> tags so only truly non-script, non-SEO content
+// (charset, viewport, font links, favicon, og:type/static meta, etc.) is carried over,
+// avoiding double-inclusion of any script that HEAD_SCRIPTS already captured.
+const HEAD_NON_SCRIPT = ORIGINAL_HEAD
+  .replace(/<title>[\s\S]*?<\/title>/g, '')
+  .replace(/<script[\s\S]*?<\/script>/gi, '')
+  .replace(/<meta\s+name="(?:description|keywords|author|robots)"[^>]*\/?>(?:\n\s*)*/g, '')
+  .replace(/<meta\s+property="og:[^"]*"[^>]*\/?>(?:\n\s*)*/g, '')
+  .replace(/<meta\s+name="twitter:[^"]*"[^>]*\/?>(?:\n\s*)*/g, '')
+  .replace(/<link\s+rel="canonical"[^>]*\/?>/g, '')
+  .trim();
 
 function xmlEscape(v) {
   return String(v)
@@ -70,11 +91,7 @@ function xmlEscape(v) {
 async function buildPageHead(page) {
   const canonical = canonicalFor(page.path);
   const isLocal = ['/coaching-in-maharajgunj', '/tuition-in-chouparan', '/coaching-in-madhygopali'].includes(page.path);
-  let extra;
-  if (page.key === 'teachers') {
-    const { buildTeacherPersonSchemas } = await ssr('/src/components/seo/schema.ts');
-    extra = buildTeacherPersonSchemas();
-  }
+  const extra = page.key === 'teachers' ? buildTeacherPersonSchemas() : undefined;
   const blocks = buildPageSchema({
     path: page.path,
     title: page.title,
@@ -124,9 +141,12 @@ async function buildPageHead(page) {
 async function buildFullHtml(head, body) {
   const before = TEMPLATE.slice(0, TEMPLATE.search(HEAD_RE));
   const after = TEMPLATE.slice(TEMPLATE.indexOf('</html>'));
-  const root = body.match(/<div id="root">[\s\S]*?<\/div>/);
-  const rootHtml = root ? root[0] : '<div id="root"></div>';
-  return `${before}<head>\n${head}\n</head>\n<body>\n${rootHtml}\n</body>${after}`;
+  // The client entry (src/main.tsx) expects to find pre-rendered markup inside #root so it can
+// hydrate rather than re-render from scratch. The SSR output IS the body content; the module
+// scripts Vite injected into <head> are already included in `head` (via HEAD_SCRIPTS), so no
+// further injection is needed here.
+const headContent = String(await head);
+return `${before}<head>\n${headContent}\n</head>\n<body>\n<div id="root">${body}</div>\n</body>${after}`;
 }
 
 async function renderPageHtml(page) {
@@ -140,12 +160,18 @@ async function renderPageHtml(page) {
   return new Promise((resolve, reject) => {
     let html = '';
     const { pipe } = renderToPipeableStream(element, {
-      onShellReady() {
-        pipe({
-          write(chunk) { if (chunk) html += String(chunk); return true; },
-          end() { resolve(html); },
-          destroy() { resolve(html); },
+      onAllReady() {
+        // react-dom's pipe() expects a real Writable stream (it wires 'error'/'drain'
+        // handlers on it), not a plain { write, end, destroy } sink object.
+        const sink = new Writable({
+          write(chunk, _enc, cb) {
+            html += String(chunk);
+            cb();
+          },
         });
+        pipe(sink);
+        sink.on('finish', () => resolve(html));
+        sink.on('error', reject);
       },
       onShellError: reject,
     });
@@ -162,13 +188,14 @@ async function main() {
   for (const page of PAGES) {
     const html = await renderPageHtml(page);
     const outPath = page.path === '/'
-      ? resolve(DIST, 'index.html')
-      : resolve(DIST, page.path, 'index.html');
+      ? join(DIST, 'index.html')
+      : join(DIST, page.path, 'index.html');
     mkdirSync(dirname(outPath), { recursive: true });
-    const headHtml = buildPageHead(page);
+    const headHtml = await buildPageHead(page);
     const fullHtml = await buildFullHtml(headHtml, html);
     writeFileSync(outPath, fullHtml, 'utf8');
-    console.log(`  ✓ ${page.path || '/'} → ${outPath.replace(ROOT + '/', '')}`);
+    const rel = outPath.replace(ROOT, '').replace(/\\/g, '/');
+    console.log(`  ✓ ${page.path || '/'} → ${rel}`);
   }
 
   console.log(`[prerender] done — ${PAGES.length} files written to dist/`);
