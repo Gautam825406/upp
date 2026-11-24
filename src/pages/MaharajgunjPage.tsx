@@ -15,7 +15,7 @@ import { selectFaqs, MAHARAJGUNJ_FAQ_IDS } from '@/data/faqs';
 const REASONS: { icon: IconName; title: string; text: string }[] = [
   {
     icon: 'graduation',
-    title: 'Class 1 to Class 10',
+    title: 'Class 6 to Class 12',
     text: 'Coaching across the full school range, from early foundations through to higher secondary entry preparation.',
   },
   {
@@ -39,17 +39,17 @@ export default function MaharajgunjPage() {
   const faqs = selectFaqs(MAHARAJGUNJ_FAQ_IDS);
 
   return (
-    <StructuredData>
+    <StructuredData faqs={faqs}>
       <Section>
         <Reveal>
           <span className="eyebrow">Coaching in Maharajgunj</span>
           <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tightest text-slate-50 sm:text-6xl">
             Coaching classes for Maharajgunj students at{' '}
-            <span className="text-gradient-gold">U++ Academy</span>
+            <span className="text-pine-600">U++ Academy</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
             U++ Academy serves students and parents across Maharajgunj with coaching for
-            Class 1 to Class 10 covering JAC, CBSE and ICSE. The academy is based in
+            Class 6 to Class 12 covering JAC, CBSE and ICSE. The academy is based in
             Madhygopali, Maharajgunj.
           </p>
         </Reveal>
@@ -58,14 +58,14 @@ export default function MaharajgunjPage() {
       <Section subtle>
         <SectionHeading
           eyebrow="Why Maharajgunj parents choose U++ Academy"
-          title={<>Coaching built for the <span className="text-gradient-gold">Maharajgunj area</span></>}
+          title={<>Coaching built for the <span className="text-pine-600">Maharajgunj area</span></>}
           description="U++ Academy focuses on concept clarity, personalised attention, and special support for students who have fallen behind — the same approach works across all classes and boards."
         />
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {REASONS.map((reason, index) => (
             <Reveal key={reason.title} delay={index * 100}>
-              <Card lift>
-                <CardIcon tone={index % 2 === 0 ? 'gold' : 'iris'}>
+              <Card>
+                <CardIcon tone={index % 2 === 0 ? 'gold' : 'pine'}>
                   <Icon name={reason.icon} />
                 </CardIcon>
                 <h3 className="mt-5 text-lg font-bold text-slate-50">{reason.title}</h3>

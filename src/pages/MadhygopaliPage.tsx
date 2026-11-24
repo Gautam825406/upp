@@ -21,7 +21,7 @@ const APPROACH_POINTS: { icon: IconName; title: string; text: string }[] = [
   {
     icon: 'shield',
     title: 'Special attention for weak students',
-    text: 'Patients, targeted help for students who have fallen behind and need to rebuild confidence subject by subject.',
+    text: 'Patient, targeted help for students who have fallen behind and need to rebuild confidence subject by subject.',
   },
   {
     icon: 'users',
@@ -39,16 +39,16 @@ export default function MadhygopaliPage() {
   const faqs = selectFaqs(MADHYGOPALI_FAQ_IDS);
 
   return (
-    <StructuredData>
+    <StructuredData faqs={faqs}>
       <Section>
         <Reveal>
           <span className="eyebrow">Based in Madhygopali</span>
           <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tightest text-slate-50 sm:text-6xl">
-            Coaching classes in <span className="text-gradient-gold">Madhygopali</span> — U++ Academy
+            Coaching classes in <span className="text-pine-600">Madhygopali</span> — U++ Academy
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
             U++ Academy is based in {LOCATION_LABEL}. The academy offers coaching for
-            Class 1 to Class 10 covering JAC, CBSE and ICSE, with a particular focus on
+            Class 6 to Class 12 covering JAC, CBSE and ICSE, with a particular focus on
             concept clarity and special support for weak students.
           </p>
         </Reveal>
@@ -57,14 +57,14 @@ export default function MadhygopaliPage() {
       <Section subtle>
         <SectionHeading
           eyebrow="The U++ Academy approach"
-          title={<>How we teach in <span className="text-gradient-gold">Madhygopali</span></>}
+          title={<>How we teach in <span className="text-pine-600">Madhygopali</span></>}
           description="U++ Academy's teaching approach is built around four core principles that apply to every student, every class and every board."
         />
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {APPROACH_POINTS.map((point, index) => (
             <Reveal key={point.title} delay={index * 100}>
-              <Card lift ring>
-                <CardIcon tone={index % 2 === 0 ? 'gold' : 'iris'}>
+              <Card>
+                <CardIcon tone={index % 2 === 0 ? 'gold' : 'pine'}>
                   <Icon name={point.icon} />
                 </CardIcon>
                 <h3 className="mt-5 text-lg font-bold text-slate-50">{point.title}</h3>

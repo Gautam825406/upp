@@ -4,13 +4,8 @@
  *   Display  Plus Jakarta Sans  headings, buttons, the wordmark
  *   Text     Manrope            body copy and UI text
  *
- * Both ship as variable fonts (weight 200-800 in one file each), so the whole scale is covered
- * without separate files per weight.
- *
- * Only the latin subset is declared. The packages' default entry points would pull six subsets each
- * (cyrillic, greek, vietnamese, latin-ext and their italics) — roughly 12 unused font files for a
- * site whose content is English. This trims the font payload to the two files actually used.
- * Devanagari or other scripts would need their @font-face added back here.
+ * Both ship as variable fonts (weight 200-800 in one file each). Only the latin subset is
+ * declared, so the font payload stays at the two files actually used.
  */
 
 @font-face {
@@ -39,142 +34,106 @@
 @tailwind utilities;
 
 /*
- * Base layer: the academy's design system. Dark premium "ink + gold" palette, with a full light
- * theme. Colours, fonts, shadows and keyframes live in tailwind.config.ts; this file adds only the
- * primitives Tailwind cannot express cleanly.
+ * Base layer: the academy's design system.
+ *
+ * Warm paper, deep pine green, one saffron accent — the look of a good school notice board, not
+ * a SaaS landing page. No gradients, no glass, no glow, no aurora blobs. Cards are flat paper
+ * with a single hairline border; buttons are flat solids with square-ish corners.
  *
  * THEMING
- * Every brand colour resolves to `rgb(var(--c-*) / <alpha-value>)`, so the light/dark switch is a
- * pure custom-property swap on <html>. Components never need `dark:` variants — the palette they
- * reference simply changes value. Default is dark (`.dark` on <html>, written by an inline script
- * in index.html to avoid a flash); `.light` swaps in the daytime palette below.
+ * Every brand colour resolves to `rgb(var(--c-*) / <alpha-value>)`, so the light/dark switch is
+ * a pure custom-property swap on <html>. Components never need `dark:` variants. Light (paper)
+ * is the default — most parents read this on a phone in daylight.
  *
- * The semantic ramps, from lightest to darkest, are:
- *   slate-50  headings / strongest text   -> slate-500  faintest text
- *   ink-950  page background              -> ink-600    the deepest accent surface
+ *   ink-950  page background (paper in light, deep green-ink in dark)
+ *   ink-900  tinted section background
+ *   ink-800  card surface
+ *   ink-700  hairline border
+ *   slate-50 headings / strongest text  ->  slate-500 faintest text
  */
 
 @layer base {
-  /* ---- Dark theme (default) ---- */
+  /* ---- Light theme (default) ---- */
   :root,
-  .dark {
-    color-scheme: dark;
-
-    --c-slate-50: 248 250 252;
-    --c-slate-100: 241 245 249;
-    --c-slate-200: 226 232 240;
-    --c-slate-300: 203 213 225;
-    --c-slate-400: 148 163 184;
-    --c-slate-500: 100 116 139;
-    --c-slate-600: 71 85 105;
-
-    --c-ink-950: 5 7 15;
-    --c-ink-900: 7 11 24;
-    --c-ink-800: 11 16 38;
-    --c-ink-700: 17 26 58;
-    --c-ink-600: 26 36 80;
-
-    --c-white: 255 255 255;
-
-    --c-gold-300: 255 227 163;
-    --c-gold-400: 255 212 121;
-    --c-gold-500: 255 194 75;
-    --c-gold-600: 240 167 35;
-    --c-gold-700: 201 134 15;
-
-    --c-iris-300: 179 166 255;
-    --c-iris-400: 139 123 255;
-    --c-iris-500: 109 91 255;
-    --c-iris-600: 86 66 224;
-    --c-iris-700: 67 49 176;
-
-    --c-aqua-300: 147 242 255;
-    --c-aqua-400: 94 230 247;
-    --c-aqua-500: 34 211 238;
-
-    --shadow-glow: 0 0 0 1px rgb(255 255 255 / 0.06), 0 24px 60px -20px rgb(109 91 255 / 0.45);
-    --shadow-gold: 0 18px 45px -18px rgb(255 194 75 / 0.55);
-    --shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.05), 0 20px 50px -30px rgb(0 0 0 / 0.9);
-
-    --gradient-hero:
-      radial-gradient(60% 60% at 20% 20%, rgb(109 91 255 / 0.28) 0%, transparent 60%),
-      radial-gradient(50% 50% at 85% 15%, rgb(255 194 75 / 0.20) 0%, transparent 60%),
-      radial-gradient(70% 70% at 50% 100%, rgb(34 211 238 / 0.12) 0%, transparent 60%);
-    --gradient-mesh: linear-gradient(160deg, #05070f 0%, #0b1026 45%, #111a3a 100%);
-
-    --dot-grid-color: rgb(255 255 255 / 0.055);
-    --surface-glass: 255 255 255;
-    --surface-glass-alpha: 0.035;
-    --surface-border-alpha: 0.08;
-    --surface-inset-alpha: 0.05;
-    --hero-photo-border: 0.4;
-
-    /* Text colour for the solid gold gradient button. It stays dark in both themes because the
-       gold fill itself does not change — inverting it would give white-on-gold. */
-    --c-on-gold: 5 7 15;
-    --c-on-solid: 255 255 255;
-  }
-
-  /* ---- Light theme ---- */
   .light {
     color-scheme: light;
 
-    /* Ramps run the other way here: headings are dark, body text is mid-grey. */
-    --c-slate-50: 12 18 32;
-    --c-slate-100: 26 34 52;
-    --c-slate-200: 39 48 68;
-    --c-slate-300: 71 85 105;
-    --c-slate-400: 100 116 139;
-    --c-slate-500: 130 145 165;
-    --c-slate-600: 156 170 188;
+    --c-slate-50: 30 41 34;
+    --c-slate-100: 44 56 48;
+    --c-slate-200: 70 82 74;
+    --c-slate-300: 92 104 96;
+    --c-slate-400: 110 122 112;
+    --c-slate-500: 134 145 136;
+    --c-slate-600: 160 170 160;
 
-    --c-ink-950: 255 255 255;
-    --c-ink-900: 249 250 252;
-    --c-ink-800: 243 244 248;
-    --c-ink-700: 234 237 243;
-    --c-ink-600: 224 229 238;
+    /* Warm paper system. */
+    --c-ink-950: 250 246 236;
+    --c-ink-900: 244 238 224;
+    --c-ink-800: 255 253 247;
+    --c-ink-700: 232 222 203;
+    --c-ink-600: 214 202 178;
 
-    /* In light mode "white" utilities mean "ink", i.e. contrast against the page. */
-    --c-white: 12 18 32;
+    /* "White" utilities mean "ink" in light mode: contrast against the page. */
+    --c-white: 30 41 34;
 
-    /* Golds darken so they stay readable as text on a light background. */
-    --c-gold-300: 168 116 12;
-    --c-gold-400: 176 122 16;
-    --c-gold-500: 193 134 20;
-    --c-gold-600: 201 134 15;
-    --c-gold-700: 173 113 13;
+    /* Deep pine green. */
+    --c-pine-300: 127 176 154;
+    --c-pine-400: 84 148 116;
+    --c-pine-500: 46 110 80;
+    --c-pine-600: 29 74 56;
+    --c-pine-700: 20 53 39;
 
-    --c-iris-300: 67 49 176;
-    --c-iris-400: 79 60 205;
-    --c-iris-500: 86 66 224;
-    --c-iris-600: 109 91 255;
-    --c-iris-700: 139 123 255;
+    /* Saffron accent — dark enough to read as text on paper. */
+    --c-gold-300: 201 138 32;
+    --c-gold-400: 185 118 18;
+    --c-gold-500: 169 100 12;
+    --c-gold-600: 140 82 10;
+    --c-gold-700: 112 64 8;
 
-    --c-aqua-300: 14 116 144;
-    --c-aqua-400: 8 145 178;
-    --c-aqua-500: 34 211 238;
+    --shadow-card: 0 1px 2px rgb(30 41 34 / 0.05), 0 10px 28px -18px rgb(30 41 34 / 0.25);
 
-    /* Softer shadows on light backgrounds. */
-    --shadow-glow: 0 0 0 1px rgb(12 18 32 / 0.04), 0 24px 60px -24px rgb(67 49 176 / 0.22);
-    --shadow-gold: 0 18px 45px -20px rgb(193 134 20 / 0.30);
-    --shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.9), 0 20px 45px -32px rgb(12 18 32 / 0.35);
+    /* Cream text on a solid pine fill — the same in both themes. */
+    --c-on-solid: 247 242 228;
+  }
 
-    /* Wash is much fainter over white so the text stays crisp. */
-    --gradient-hero:
-      radial-gradient(60% 60% at 20% 20%, rgb(109 91 255 / 0.14) 0%, transparent 60%),
-      radial-gradient(50% 50% at 85% 15%, rgb(255 194 75 / 0.16) 0%, transparent 60%),
-      radial-gradient(70% 70% at 50% 100%, rgb(34 211 238 / 0.10) 0%, transparent 60%);
-    --gradient-mesh: linear-gradient(160deg, #ffffff 0%, #f7f8fc 45%, #eef1f8 100%);
+  /* ---- Dark theme ---- */
+  .dark {
+    color-scheme: dark;
 
-    --dot-grid-color: rgb(12 18 32 / 0.06);
-    --surface-glass: 12 18 32;
-    --surface-glass-alpha: 0.022;
-    --surface-border-alpha: 0.10;
-    --surface-inset-alpha: 0.5;
-    --hero-photo-border: 0.25;
+    --c-slate-50: 244 239 226;
+    --c-slate-100: 226 220 203;
+    --c-slate-200: 198 205 194;
+    --c-slate-300: 168 176 165;
+    --c-slate-400: 140 150 138;
+    --c-slate-500: 116 126 114;
+    --c-slate-600: 94 104 92;
 
-    --c-on-gold: 255 255 255;
-    --c-on-solid: 255 255 255;
+    /* Deep green-ink system. */
+    --c-ink-950: 15 26 20;
+    --c-ink-900: 20 34 26;
+    --c-ink-800: 26 44 33;
+    --c-ink-700: 44 62 50;
+    --c-ink-600: 62 82 68;
+
+    --c-white: 244 239 226;
+
+    /* Pine lightens in dark mode so solid pine buttons stay readable. */
+    --c-pine-300: 147 196 171;
+    --c-pine-400: 104 172 136;
+    --c-pine-500: 64 138 100;
+    --c-pine-600: 76 148 106;
+    --c-pine-700: 53 104 77;
+
+    /* Saffron lightens in dark mode for the same reason. */
+    --c-gold-300: 240 190 106;
+    --c-gold-400: 232 168 60;
+    --c-gold-500: 209 138 31;
+    --c-gold-600: 185 111 20;
+    --c-gold-700: 150 96 15;
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 30px -18px rgb(0 0 0 / 0.7);
+
+    --c-on-solid: 247 242 228;
   }
 
   html {
@@ -192,26 +151,21 @@
     @apply bg-ink-950 text-slate-200 font-sans antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
-    /* Slightly relaxed body leading: Manrope sits a little tight at 1.5, and most of the site's
-       copy is 15-18px prose where the extra breathing room reads as more considered. */
     line-height: 1.65;
   }
 
   h1, h2, h3, h4 {
     @apply font-display text-slate-50;
     text-wrap: balance;
-    /* Variable fonts carry an optical-size axis. Letting the browser set it automatically keeps
-       large headings from looking spindly and small headings from looking crowded. */
     font-optical-sizing: auto;
   }
 
   ::selection {
-    background: rgba(255, 194, 75, 0.32);
-    color: #fff;
+    background: rgba(201, 138, 32, 0.3);
   }
 
   :focus-visible {
-    outline: 2px solid #ffc24b;
+    outline: 2px solid #c98a20;
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -228,9 +182,6 @@
     border-radius: 999px;
     border: 2px solid var(--c-ink-950);
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--c-iris-500);
-  }
 }
 
 @layer components {
@@ -238,122 +189,85 @@
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
   }
 
-  .glass {
-    @apply rounded-2xl border backdrop-blur-xl;
-    border-color: rgb(var(--surface-glass) / var(--surface-border-alpha));
-    background-color: rgb(var(--surface-glass) / var(--surface-glass-alpha));
+  /* Flat paper card: one hairline border, no blur, no glow. */
+  .card-flat {
+    @apply rounded-xl border bg-ink-800;
+    border-color: rgb(var(--c-ink-700));
     box-shadow: var(--shadow-card);
   }
 
-  .glass-strong {
-    @apply rounded-2xl border backdrop-blur-2xl;
-    border-color: rgb(var(--surface-glass) / calc(var(--surface-border-alpha) * 1.5));
-    background-color: rgb(var(--c-ink-800) / 0.8);
-    box-shadow: var(--shadow-card);
+  /* Short saffron rule above a section label — the editorial eyebrow. */
+  .rule-accent {
+    height: 2px;
+    width: 2rem;
+    background-color: rgb(var(--c-gold-500));
   }
 
-  /* The colour tokens are space-separated RGB triples ("255 227 163") so Tailwind can apply its
-     own alpha value. A gradient stop needs a real <rgb-color>, so every stop is wrapped in rgb()
-     — passing the bare token here produces an invalid gradient, which fails silently and leaves
-     the text invisible because of `color: transparent`. */
-  .text-gradient-gold {
-    background-image: linear-gradient(
-      100deg,
-      rgb(var(--c-gold-300)) 0%,
-      rgb(var(--c-gold-500)) 45%,
-      rgb(var(--c-gold-600)) 70%,
-      rgb(var(--c-gold-400)) 100%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  .text-gradient-iris {
-    background-image: linear-gradient(
-      100deg,
-      rgb(var(--c-iris-300)) 0%,
-      rgb(var(--c-iris-500)) 50%,
-      rgb(var(--c-aqua-400)) 100%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  .rule-gold {
+  .rule-hairline {
     height: 1px;
-    background-image: linear-gradient(90deg, transparent, rgb(var(--c-gold-500) / 0.55), transparent);
+    background-color: rgb(var(--c-ink-700));
   }
 
-  .bg-dot-grid {
-    background-image: radial-gradient(var(--dot-grid-color) 1px, transparent 1px);
-    background-size: 26px 26px;
-  }
-
+  /* Flat solid buttons. Pine for call/primary, WhatsApp green for WhatsApp, outline for ghost. */
   .btn-primary {
-    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
-      font-semibold text-onGold transition-all duration-300;
-    background-image: linear-gradient(120deg, rgb(var(--c-gold-300)) 0%, rgb(var(--c-gold-500)) 45%, rgb(var(--c-gold-600)) 100%);
-    box-shadow: var(--shadow-gold);
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-pine-600 px-6 py-3
+      font-semibold text-onSolid transition-colors;
   }
   .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 24px 55px -18px rgb(var(--c-gold-500) / 0.55);
+    @apply bg-pine-700;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3
-      font-semibold text-slate-100 backdrop-blur-md transition-colors;
-    border-color: rgb(var(--surface-glass) / calc(var(--surface-border-alpha) * 1.9));
-    background-color: rgb(var(--surface-glass) / var(--surface-glass-alpha));
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-ink-600 bg-transparent
+      px-6 py-3 font-semibold text-slate-100 transition-colors;
   }
   .btn-ghost:hover {
-    border-color: rgb(var(--surface-glass) / calc(var(--surface-border-alpha) * 3.5));
-    background-color: rgb(var(--surface-glass) / calc(var(--surface-glass-alpha) * 2.2));
+    @apply bg-ink-900;
   }
 
   .btn-call {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold
-      text-onSolid transition-all duration-300;
-    background-image: linear-gradient(120deg, rgb(var(--c-iris-400)) 0%, rgb(var(--c-iris-500)) 55%, rgb(var(--c-iris-700)) 100%);
-    box-shadow: 0 18px 45px -20px rgb(var(--c-iris-500) / 0.55);
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-pine-600 px-6 py-3
+      font-semibold text-onSolid transition-colors;
   }
   .btn-call:hover {
-    transform: translateY(-2px);
+    @apply bg-pine-700;
   }
 
   .btn-whatsapp {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold
-      text-onSolid transition-all duration-300;
-    background-image: linear-gradient(120deg, #34d399 0%, #10b981 60%, #059669 100%);
-    box-shadow: 0 18px 45px -20px rgb(16 185 129 / 0.5);
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold
+      text-white transition-colors;
+    background-color: #1e7a46;
   }
   .btn-whatsapp:hover {
-    transform: translateY(-2px);
+    background-color: #166138;
+  }
+
+  /* Cream button for use on a solid pine panel (e.g. the closing CTA), where a pine
+     button would disappear into the background. */
+  .btn-cream {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold
+      transition-colors;
+    background-color: #faf6ec;
+    color: #1d4a38;
+  }
+  .btn-cream:hover {
+    background-color: #f0e8d5;
   }
 
   .btn-sm {
     @apply px-4 py-2 text-sm;
   }
 
+  /* Section label: small caps with a saffron rule — no pill, no badge. */
   .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-gold-500/[0.08]
-      px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-gold-400;
+    @apply inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.16em] text-gold-600;
   }
-
-  .card-lift {
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease,
-      background-color 0.3s ease;
-  }
-  .card-lift:hover {
-    border-color: rgba(255, 194, 75, 0.25);
-    transform: translateY(-4px);
-  }
-  /* Touch devices never fire :hover, so give them a press state instead of a dead card. */
-  .card-lift:active {
-    border-color: rgba(255, 194, 75, 0.3);
-    transform: translateY(-1px) scale(0.994);
+  .eyebrow::before {
+    content: '';
+    width: 1.75rem;
+    height: 2px;
+    background-color: rgb(var(--c-gold-500));
+    flex-shrink: 0;
   }
 
   /* Reserve room for the fixed bottom action bar so it never covers the last
@@ -367,37 +281,14 @@
     }
   }
 
-  /* Soft aurora wash behind the hero. Pure CSS so it costs nothing on mobile. */
-  .aurora {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(56px);
-    pointer-events: none;
-    animation: aurora-drift 9s ease-in-out infinite;
-  }
-  @keyframes aurora-drift {
-    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-    50% { transform: translate3d(0, -18px, 0) scale(1.08); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .aurora {
-      animation: none;
-    }
-  }
-  /* The accent hues darken in light mode, so at full strength they read as grey smudges on
-     white. Halve them so the hero stays airy instead of muddy. */
-  .light .aurora {
-    opacity: 0.45;
-  }
-
   .skip-link {
     @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]
-      focus:rounded-full focus:bg-gold-500 focus:px-5 focus:py-2.5 focus:text-sm focus:font-bold
-      focus:text-ink-950;
+      focus:rounded-lg focus:bg-pine-600 focus:px-5 focus:py-2.5 focus:text-sm focus:font-bold
+      focus:text-onSolid;
   }
 
   .nav-link {
-    @apply relative text-sm font-medium text-slate-300 transition-colors hover:text-white;
+    @apply relative text-sm font-semibold text-slate-300 transition-colors hover:text-slate-50;
   }
   .nav-link::after {
     content: '';
@@ -406,16 +297,15 @@
     bottom: -6px;
     height: 2px;
     width: 0;
-    background-image: linear-gradient(90deg, #ffc24b, #8b7bff);
-    transition: width 0.3s ease;
-    border-radius: 999px;
+    background-color: rgb(var(--c-gold-500));
+    transition: width 0.25s ease;
   }
   .nav-link:hover::after,
   .nav-link[data-active='true']::after {
     width: 100%;
   }
   .nav-link[data-active='true'] {
-    color: #fff;
+    @apply text-slate-50;
   }
 
   .faq-summary {
@@ -423,34 +313,6 @@
   }
   .faq-summary::-webkit-details-marker {
     display: none;
-  }
-
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    gap: 3rem;
-    animation: marquee 34s linear infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation: none;
-    }
-  }
-
-  .glow-ring {
-    position: relative;
-  }
-  .glow-ring::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgb(var(--c-gold-500) / 0.5), rgb(var(--c-iris-400) / 0.35), transparent 60%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
   }
 }
 

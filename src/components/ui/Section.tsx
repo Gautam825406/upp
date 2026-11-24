@@ -16,7 +16,7 @@ interface SectionProps {
 
 export function Section({ children, id, className, subtle = false }: SectionProps) {
   return (
-    <section id={id} className={cn('relative py-16 sm:py-24 lg:py-28', subtle && 'bg-ink-900/60', className)}>
+    <section id={id} className={cn('relative scroll-mt-20 py-16 sm:py-24 lg:py-28', subtle && 'bg-ink-900/60', className)}>
       <div className="container-shell">{children}</div>
     </section>
   );

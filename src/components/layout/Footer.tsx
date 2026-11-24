@@ -15,11 +15,11 @@ import { PAGES } from '@/routes';
 function FooterColumn({ title, links }: { title: string; links: { label: string; to: string }[] }) {
   return (
     <div>
-      <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-400">{title}</h3>
+      <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-600">{title}</h3>
       <ul className="mt-4 space-y-2.5">
         {links.map((link) => (
           <li key={link.to}>
-            <Link to={link.to} className="text-sm text-slate-300 transition-colors hover:text-white">
+            <Link to={link.to} className="text-sm text-slate-300 transition-colors hover:text-slate-50">
               {link.label}
             </Link>
           </li>
@@ -36,14 +36,17 @@ export function Footer() {
   );
 
   return (
-    <footer className="relative border-t border-white/[0.08] bg-ink-900">
+    <footer className="relative border-t border-ink-700 bg-ink-900">
       <div className="bg-dot-grid absolute inset-0 opacity-40" aria-hidden="true" />
-      <div className="container-shell relative py-14 pb-action-bar">
+      {/* pt-14, NOT py-14: pb-action-bar must own the bottom padding, or the Tailwind
+          py-14 utility (later in the cascade) overrides it and the sticky mobile action
+          bar covers the footer's last lines on phones. */}
+      <div className="container-shell relative pt-14 pb-action-bar">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Logo />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-slate-400">
-              Coaching for Class 1 to 10 in {BUSINESS.boards.join(', ')} — based in{' '}
+              Coaching for Class 6 to 12 in {BUSINESS.boards.join(', ')} — based in{' '}
               {BUSINESS.address.addressLocality}, {BUSINESS.areaServed[1]} and serving nearby{' '}
               {BUSINESS.areaServed[2]}.
             </p>
@@ -51,6 +54,14 @@ export function Footer() {
               <CallButton variant="footer">Call</CallButton>
               <WhatsAppButton variant="footer">WhatsApp</WhatsAppButton>
             </div>
+            <a
+              href={BUSINESS.playStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-600 transition-colors hover:text-slate-50"
+            >
+              Get the app on Google Play
+            </a>
           </div>
 
           <FooterColumn
@@ -72,16 +83,22 @@ export function Footer() {
           />
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-400">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-600">
               Contact
             </h3>
             <ul className="mt-4 space-y-3 text-sm">
               <li>
                 <a
                   href={TEL_HREF}
-                  className="font-semibold text-slate-100 transition-colors hover:text-gold-400"
+                  className="font-semibold text-slate-100 transition-colors hover:text-gold-600"
                 >
                   {BUSINESS.phone}
+                </a>
+                <a
+                  href={`tel:${BUSINESS.secondaryPhoneE164}`}
+                  className="mt-1 block text-slate-300 transition-colors hover:text-gold-600"
+                >
+                  {BUSINESS.secondaryPhone}
                 </a>
               </li>
               <li className="text-slate-300">
@@ -98,7 +115,7 @@ export function Footer() {
                   href={BUSINESS.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-300 underline decoration-white/20 underline-offset-4 transition-colors hover:text-gold-400"
+                  className="text-slate-300 underline decoration-ink-600 underline-offset-4 transition-colors hover:text-gold-600"
                 >
                   View on Google Maps
                 </a>

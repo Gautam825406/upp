@@ -4,9 +4,8 @@ import { BUSINESS, whatsappHref } from '@/data/business';
 import { Icon } from '@/components/ui/Icon';
 
 const CLASS_OPTIONS = [
-  'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5',
   'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10',
-  'Class 11', 'Class 12',
+  'Class 11 Arts', 'Class 11 Science', 'Class 12 Arts', 'Class 12 Science',
 ];
 
 const BOARD_OPTIONS = ['JAC', 'CBSE', 'ICSE', 'Not sure yet'];
@@ -55,14 +54,14 @@ export function EnquiryForm() {
 
   if (sent) {
     return (
-      <div className="glass-strong rounded-2xl p-8 text-center">
+      <div className="card-flat rounded-2xl p-8 text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/10">
           <Icon name="check" className="h-7 w-7 text-emerald-400" />
         </div>
         <h3 className="mt-5 text-xl font-bold text-slate-50">Thank you!</h3>
         <p className="mt-2 text-sm text-slate-400">
           We have opened WhatsApp with your enquiry. If it did not open, call us directly at{' '}
-          <a href={`tel:${BUSINESS.phoneE164}`} className="text-gold-400 underline">
+          <a href={`tel:${BUSINESS.phoneE164}`} className="text-gold-600 underline">
             {BUSINESS.phone}
           </a>.
         </p>
@@ -71,7 +70,7 @@ export function EnquiryForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="glass-strong rounded-2xl p-6 sm:p-8">
+    <form onSubmit={handleSubmit} className="card-flat rounded-2xl p-6 sm:p-8">
       <h3 className="text-xl font-bold text-slate-50">Admission Enquiry</h3>
       <p className="mt-1.5 text-sm text-slate-400">
         Tell us about your child and we will get back to you on WhatsApp.
@@ -88,7 +87,7 @@ export function EnquiryForm() {
             required
             value={form.name}
             onChange={(e) => update('name', e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-gold-500/50"
+            className="w-full rounded-xl border border-ink-700 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-gold-500/50"
             placeholder="Parent or guardian name"
           />
         </div>
@@ -103,7 +102,7 @@ export function EnquiryForm() {
             required
             value={form.phone}
             onChange={(e) => update('phone', e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-gold-500/50"
+            className="w-full rounded-xl border border-ink-700 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-gold-500/50"
             placeholder="+91 98765 43210"
           />
         </div>
@@ -117,7 +116,7 @@ export function EnquiryForm() {
             required
             value={form.className}
             onChange={(e) => update('className', e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 outline-none transition-colors focus:border-gold-500/50"
+            className="w-full rounded-xl border border-ink-700 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 outline-none transition-colors focus:border-gold-500/50"
           >
             <option value="" disabled>Select class</option>
             {CLASS_OPTIONS.map((opt) => (
@@ -134,7 +133,7 @@ export function EnquiryForm() {
             id="enquiry-board"
             value={form.board}
             onChange={(e) => update('board', e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 outline-none transition-colors focus:border-gold-500/50"
+            className="w-full rounded-xl border border-ink-700 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 outline-none transition-colors focus:border-gold-500/50"
           >
             <option value="">Select board</option>
             {BOARD_OPTIONS.map((opt) => (
@@ -152,7 +151,7 @@ export function EnquiryForm() {
             rows={3}
             value={form.message}
             onChange={(e) => update('message', e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-gold-500/50"
+            className="w-full rounded-xl border border-ink-700 bg-ink-900/70 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-gold-500/50"
             placeholder="Any specific subject or class requirement?"
           />
         </div>

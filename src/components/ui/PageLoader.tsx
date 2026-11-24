@@ -15,7 +15,7 @@ export function PageLoader() {
     >
       <div className="flex items-center gap-3 text-slate-400">
         <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-400 opacity-60" />
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-500 opacity-60" />
           <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-gold-500" />
         </span>
         <span className="text-sm font-medium tracking-wide">Loading U++ Academy…</span>

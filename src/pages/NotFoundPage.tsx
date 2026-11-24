@@ -13,7 +13,7 @@ export default function NotFoundPage() {
         robots="noindex, follow"
       />
 
-      <LogoMark className="h-16 w-16 opacity-70" />
+      <LogoMark className="h-16 w-16" />
 
       <p className="eyebrow mt-8">404</p>
 

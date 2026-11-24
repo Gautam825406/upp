@@ -41,6 +41,19 @@ const { canonicalFor } = await ssr('/src/components/seo/Seo.tsx');
 const seoSchema = await ssr('/src/components/seo/schema.ts');
 const { buildPageSchema } = seoSchema;
 const { buildTeacherPersonSchemas } = seoSchema;
+// The FAQ lists live in one place (src/data/faqs.ts) and are shared with the pages, so the
+// visible FAQs and the FAQPage structured data below can never drift apart.
+const faqsModule = await ssr('/src/data/faqs.ts');
+const { selectFaqs } = faqsModule;
+const PAGE_FAQ_IDS = {
+  home: faqsModule.HOME_FAQ_IDS,
+  maharajgunj: faqsModule.MAHARAJGUNJ_FAQ_IDS,
+  chouparan: faqsModule.CHOUPARAN_FAQ_IDS,
+  madhygopali: faqsModule.MADHYGOPALI_FAQ_IDS,
+  courses: faqsModule.HOME_FAQ_IDS,
+  teachers: faqsModule.TEACHERS_FAQ_IDS,
+  contact: faqsModule.CONTACT_FAQ_IDS,
+};
 // Load react-router via a bare Node import (NOT through Vite's SSR module graph).
 // Vite SSR-loads `react` under the project name ("react"), but react-router's own
 // module-graph instance sees it under its own name, so contexts and components from the two
@@ -92,12 +105,14 @@ async function buildPageHead(page) {
   const canonical = canonicalFor(page.path);
   const isLocal = ['/coaching-in-maharajgunj', '/tuition-in-chouparan', '/coaching-in-madhygopali'].includes(page.path);
   const extra = page.key === 'teachers' ? buildTeacherPersonSchemas() : undefined;
+  const pageFaqs = selectFaqs(PAGE_FAQ_IDS[page.key] ?? []);
   const blocks = buildPageSchema({
     path: page.path,
     title: page.title,
     description: page.description,
     breadcrumb: page.breadcrumb,
     asLocalBusiness: isLocal,
+    faqs: pageFaqs.length > 0 ? pageFaqs : undefined,
     extra,
   });
 
@@ -127,8 +142,11 @@ async function buildPageHead(page) {
     `<meta property="og:title" content="${xmlEscape(page.title)}" />`,
     `<meta property="og:description" content="${xmlEscape(page.description)}" />`,
     `<meta property="og:url" content="${canonical}" />`,
-    // Twitter
-    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta property="og:image" content="https://uppacademy.in/logo.jpg" />`,
+    `<meta property="og:image:alt" content="U++ Academy — gold U++ with a graduation cap and open book" />`,
+    // Twitter (summary card: the logo is square, so a small square thumbnail fits it)
+    `<meta name="twitter:card" content="summary" />`,
+    `<meta name="twitter:image" content="https://uppacademy.in/logo.jpg" />`,
     `<meta name="twitter:title" content="${xmlEscape(page.title)}" />`,
     `<meta name="twitter:description" content="${xmlEscape(page.description)}" />`,
     // JSON-LD

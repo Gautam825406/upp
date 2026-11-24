@@ -1,6 +1,7 @@
 /**
- * Glass card used for course groups, focus areas, teachers and location highlights.
- * `as` lets it render as a link or article where semantics require it.
+ * Flat paper card used for course groups, focus areas, teachers and location highlights.
+ * One hairline border, no blur, no glow, no lift animation — a card should look like a card
+ * on a notice board, not like a floating panel.
  */
 
 import type { ReactNode } from 'react';
@@ -9,48 +10,35 @@ import { cn } from '@/lib/cn';
 interface CardProps {
   children: ReactNode;
   className?: string;
-  /** Enable the hover lift used in card grids. */
+  /** Kept for callers; no longer lifts — flat cards do not float. */
   lift?: boolean;
-  /** Stronger surface for cards that need more visual weight. */
-  strong?: boolean;
-  /** Adds the animated gold gradient border. */
+  /** Kept for callers; no longer adds a gradient ring. */
   ring?: boolean;
+  /** Kept for callers; strong and regular cards now share the same flat surface. */
+  strong?: boolean;
 }
 
-export function Card({ children, className, lift = false, strong = false, ring = false }: CardProps) {
-  return (
-    <div
-      className={cn(
-        strong ? 'glass-strong' : 'glass',
-        lift && 'card-lift',
-        ring && 'glow-ring',
-        'p-5 sm:p-7',
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+export function Card({ children, className }: CardProps) {
+  return <div className={cn('card-flat p-5 sm:p-7', className)}>{children}</div>;
 }
 
 interface CardIconProps {
   children: ReactNode;
   className?: string;
-  tone?: 'gold' | 'iris' | 'aqua';
+  tone?: 'gold' | 'pine';
 }
 
 const TONES: Record<NonNullable<CardIconProps['tone']>, string> = {
-  gold: 'border-gold-500/25 bg-gold-500/10 text-gold-400',
-  iris: 'border-iris-400/25 bg-iris-400/10 text-iris-400',
-  aqua: 'border-aqua-400/25 bg-aqua-400/10 text-aqua-400',
+  gold: 'border-gold-500/30 bg-gold-500/10 text-gold-600',
+  pine: 'border-pine-500/30 bg-pine-500/10 text-pine-600',
 };
 
-/** Rounded icon well that sits at the top of a card. */
+/** Square icon well that sits at the top of a card. */
 export function CardIcon({ children, className, tone = 'gold' }: CardIconProps) {
   return (
     <span
       className={cn(
-        'inline-flex h-12 w-12 items-center justify-center rounded-xl border',
+        'inline-flex h-12 w-12 items-center justify-center rounded-lg border',
         TONES[tone],
         className,
       )}

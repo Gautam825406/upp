@@ -21,7 +21,7 @@ const LOCATION_LINKS: {
     href: '/coaching-in-madhygopali',
     heading: 'Coaching in Madhygopali',
     blurb:
-      'U++ Academy is based in Madhygopali, Maharajgunj. The academy offers coaching for Class 1 to Class 10 with concept clarity, personalised attention, and special support for weak students.',
+      'U++ Academy is based in Madhygopali, Maharajgunj. The academy offers coaching for Class 6 to Class 12 with concept clarity, personalised attention, and special support for weak students.',
     icon: 'map-pin',
     isPrimary: true,
   },
@@ -31,7 +31,7 @@ const LOCATION_LINKS: {
     href: '/coaching-in-maharajgunj',
     heading: 'Coaching in Maharajgunj',
     blurb:
-      'U++ Academy serves students and parents across Maharajgunj, offering coaching classes for JAC, CBSE and ICSE students from Class 1 to Class 10.',
+      'U++ Academy serves students and parents across Maharajgunj, offering coaching classes for JAC, CBSE and ICSE students from Class 6 to Class 12.',
     icon: 'graduation',
     isPrimary: false,
   },
@@ -54,7 +54,7 @@ export function Locations() {
         eyebrow="Areas we serve"
         title={
           <>
-            One academy, <span className="text-gradient-gold">three nearby areas</span>
+            One academy, <span className="text-pine-600">three nearby areas</span>
           </>
         }
         description={`U++ Academy is based in ${BUSINESS.address.addressLocality}, ${BUSINESS.areaServed[1]}. Parents and students from Madhygopali, Maharajgunj and nearby Chouparan can reach the academy for coaching enquiries.`}
@@ -64,20 +64,20 @@ export function Locations() {
         {LOCATION_LINKS.map((location, index) => (
           <Reveal key={location.area} delay={index * 110}>
             <Link to={location.href} className="block h-full" aria-label={`${location.heading} — visit page`}>
-              <Card lift ring className="flex h-full flex-col">
+              <Card className="flex h-full flex-col">
                 <div className="flex items-start justify-between gap-3">
-                  <span className={`inline-flex h-11 w-11 items-center justify-center rounded-xl border ${location.isPrimary ? 'border-gold-500/30 bg-gold-500/12 text-gold-400' : 'border-iris-400/25 bg-iris-400/10 text-iris-400'}`}>
+                  <span className={`inline-flex h-11 w-11 items-center justify-center rounded-xl border ${location.isPrimary ? 'border-gold-500/30 bg-gold-500/10 text-gold-600' : 'border-pine-500/30 bg-pine-500/10 text-pine-600'}`}>
                     <Icon name={location.icon} />
                   </span>
                   {location.isPrimary && (
-                    <span className="rounded-full border border-gold-500/25 bg-gold-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-gold-400">
+                    <span className="rounded-md border border-gold-500/30 bg-gold-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-gold-600">
                       Based here
                     </span>
                   )}
                 </div>
                 <h3 className="mt-5 text-lg font-bold text-slate-50 sm:text-xl">{location.heading}</h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{location.blurb}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-400 transition-colors hover:text-gold-300">
+                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-600 transition-colors hover:text-gold-500">
                   Learn more
                   <Icon name="arrow-right" className="h-4 w-4" />
                 </span>

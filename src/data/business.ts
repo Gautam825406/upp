@@ -25,13 +25,26 @@ export const BUSINESS = {
   /** Director of the academy. */
   director: 'Umesh Kumar',
 
-  phone: '+91 9065792628',
-  phoneE164: '+919065792628',
-  /** Digits only — used for wa.me, which must not contain separators. */
-  phoneDigits: '919065792628',
+  /** Primary contact number — shown everywhere as the main number to call. */
+  phone: '+91 8862958656',
+  phoneE164: '+918862958656',
+  /** Digits only — used for tel: links, which must not contain separators. */
+  phoneDigits: '918862958656',
 
-  classes: '1–10',
-  classesPlain: 'Class 1 to 10',
+  /** Secondary contact number — the academy's earlier number, still in use. */
+  secondaryPhone: '+91 9065792628',
+  secondaryPhoneE164: '+919065792628',
+  secondaryPhoneDigits: '919065792628',
+
+  /**
+   * Number WhatsApp enquiries go to. Kept on the earlier number (+91 9065792628) until the
+   * owner confirms WhatsApp also works on the primary number — do not switch this silently.
+   */
+  whatsappPhone: '+91 9065792628',
+  whatsappDigits: '919065792628',
+
+  classes: '6–12',
+  classesPlain: 'Class 6 to 12',
   boards: ['JAC', 'CBSE', 'ICSE'] as const,
 
   /**
@@ -81,17 +94,29 @@ export const BUSINESS = {
 
   /** Whether the GBP URL above is a genuine claimed profile. Flip to true after TODO(owner). */
   hasVerifiedGoogleBusinessProfile: false,
+
+  /**
+   * Google Play listing for the U++ Academy Android app (package
+   * com.velocitycoachingclasses.app). Verified live 25 Nov 2026: the listing is "U++ Academy"
+   * on Google Play, describing recorded and live classes, study material and expert guidance.
+   * Students download the app from here — this is the link the Download App section uses.
+   */
+  playStoreUrl:
+    'https://play.google.com/store/apps/details?id=com.velocitycoachingclasses.app',
 } as const;
 
-/** Click-to-call href, e.g. `tel:+919065792628`. */
+/** Click-to-call href for the primary number, e.g. `tel:+918862958656`. */
 export const TEL_HREF = `tel:${BUSINESS.phoneE164}`;
+
+/** Click-to-call href for the secondary number. */
+export const SECONDARY_TEL_HREF = `tel:${BUSINESS.secondaryPhoneE164}`;
 
 /** WhatsApp click-to-chat href with a short, factual prefilled message. */
 export function whatsappHref(message?: string): string {
   const text =
     message ??
-    `Hello U++ Academy, I would like to know about Class 1-10 coaching (JAC / CBSE / ICSE) for my child.`;
-  return `https://wa.me/${BUSINESS.phoneDigits}?text=${encodeURIComponent(text)}`;
+    `Hello U++ Academy, I would like to know about Class 6-12 coaching (JAC / CBSE / ICSE) for my child.`;
+  return `https://wa.me/${BUSINESS.whatsappDigits}?text=${encodeURIComponent(text)}`;
 }
 
 /** Human readable location string used in prose and JSON-LD `@type` prose. */

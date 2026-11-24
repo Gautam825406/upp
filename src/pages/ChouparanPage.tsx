@@ -37,13 +37,13 @@ export default function ChouparanPage() {
   const faqs = selectFaqs(CHOUPARAN_FAQ_IDS);
 
   return (
-    <StructuredData>
+    <StructuredData faqs={faqs}>
       <Section>
         <Reveal>
           <span className="eyebrow">Tuition near Chouparan</span>
           <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tightest text-slate-50 sm:text-6xl">
             Tuition classes near Chouparan —{' '}
-            <span className="text-gradient-gold">enquire at U++ Academy</span>
+            <span className="text-pine-600">enquire at U++ Academy</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
             Parents and students from Chouparan can enquire about coaching at U++ Academy,
@@ -56,18 +56,18 @@ export default function ChouparanPage() {
       <Section subtle>
         <SectionHeading
           eyebrow="How Chouparan parents get started"
-          title={<>Simple steps to <span className="text-gradient-gold">enquire</span> about coaching</>}
+          title={<>Simple steps to <span className="text-pine-600">enquire</span> about coaching</>}
           description="U++ Academy does not maintain a separate Chouparan branch. All enquiries for Chouparan students go directly to the academy in Madhygopali, Maharajgunj."
         />
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           {CHOUPARAN_STEPS.map((step, index) => (
             <Reveal key={step.title} delay={index * 100}>
-              <Card lift className="h-full">
-                <span className="inline-flex items-center rounded-full border border-gold-500/25 bg-gold-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400">
+              <Card className="h-full">
+                <span className="inline-flex items-center rounded-md border border-gold-500/30 bg-gold-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-600">
                   {step.step}
                 </span>
                 <CardIcon tone="gold" className="mt-5">
-                  <Icon name="phone" />
+                  <Icon name={step.icon} />
                 </CardIcon>
                 <h3 className="mt-5 text-lg font-bold text-slate-50">{step.title}</h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{step.text}</p>
@@ -77,7 +77,7 @@ export default function ChouparanPage() {
         </div>
 
         <Reveal delay={360} className="mt-10">
-          <div className="glass-strong rounded-2xl p-6 sm:p-8">
+          <div className="card-flat rounded-2xl p-6 sm:p-8">
             <h3 className="text-lg font-bold text-slate-50">Contact details for Chouparan parents</h3>
             <p className="mt-2 text-sm text-slate-400">
               U++ Academy is located in {LOCATION_LABEL}. Use either of these options:

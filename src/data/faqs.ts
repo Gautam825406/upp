@@ -25,10 +25,10 @@ export const FAQS: Faq[] = [
       'U++ Academy is located in Madhygopali, Maharajgunj, and welcomes students and parents from nearby Chouparan and surrounding areas.',
   },
   {
-    id: 'classes-1-10',
-    question: 'Does U++ Academy offer tuition for Classes 1–10?',
+    id: 'classes-6-12',
+    question: 'Does U++ Academy offer tuition for Classes 6–12?',
     answer:
-      'Yes. U++ Academy runs coaching for Class 1 to Class 10, with academic support suited to each stage of learning — from building early school foundations to preparing for higher secondary entry.',
+      'Yes. U++ Academy runs coaching for Class 6 to Class 12, with academic support suited to each stage — from Class 6 foundations through Class 10 boards to Class 11 and 12 Arts and Science.',
   },
   {
     id: 'boards',
@@ -52,29 +52,29 @@ export const FAQS: Faq[] = [
     id: 'chouparan-contact',
     question: 'How can parents from Chouparan contact U++ Academy?',
     answer:
-      'Parents from Chouparan can call +91 9065792628 or message U++ Academy on WhatsApp. U++ Academy is based in Madhygopali, Maharajgunj, and parents can enquire about available classes directly from there.',
+      'Parents from Chouparan can call +91 8862958656 or +91 9065792628, or message U++ Academy on WhatsApp. U++ Academy is based in Madhygopali, Maharajgunj, and parents can enquire about available classes directly from there.',
   },
   {
     id: 'contact-umesh-kumar',
     question: 'How can parents contact Umesh Kumar?',
     answer:
-      'Parents can reach the U++ Academy team, including Director Umesh Kumar, by phone at +91 9065792628 or by sending a WhatsApp message to the same number to discuss admissions.',
+      'Parents can reach the U++ Academy team, including Director Umesh Kumar, by phone at +91 8862958656 or +91 9065792628, or by sending a WhatsApp message to +91 9065792628 to discuss admissions.',
   },
   {
     id: 'admission',
     question: 'How can students enquire about admission?',
     answer:
-      'Students and parents can enquire about admission by calling +91 9065792628, sending a WhatsApp message, or filling in the admission enquiry form on the contact page of the U++ Academy website.',
+      'Students and parents can enquire about admission by calling +91 8862958656, sending a WhatsApp message, or filling in the admission enquiry form on the contact page of the U++ Academy website.',
   },
 ];
 
 /** Subset shown on the homepage — the questions that answer the most common parent concerns. */
-export const HOME_FAQ_IDS = ['location', 'classes-1-10', 'boards', 'weak-students', 'admission'] as const;
+export const HOME_FAQ_IDS = ['location', 'classes-6-12', 'boards', 'weak-students', 'admission'] as const;
 
 /** Questions most relevant to the Maharajgunj location page. */
 export const MAHARAJGUNJ_FAQ_IDS = [
   'location',
-  'classes-1-10',
+  'classes-6-12',
   'boards',
   'weak-students',
   'director',
@@ -85,15 +85,23 @@ export const MAHARAJGUNJ_FAQ_IDS = [
 export const CHOUPARAN_FAQ_IDS = [
   'location',
   'chouparan-contact',
-  'classes-1-10',
+  'classes-6-12',
   'boards',
   'admission',
+] as const;
+
+/** Questions most relevant to the teachers page. */
+export const TEACHERS_FAQ_IDS = ['director', 'classes-6-12', 'weak-students', 'admission'] as const;
+
+/** Questions most relevant to the contact page. */
+export const CONTACT_FAQ_IDS = [
+  'location', 'contact-umesh-kumar', 'chouparan-contact', 'admission', 'classes-6-12',
 ] as const;
 
 /** Questions most relevant to the Madhygopali page. */
 export const MADHYGOPALI_FAQ_IDS = [
   'location',
-  'classes-1-10',
+  'classes-6-12',
   'boards',
   'weak-students',
   'director',

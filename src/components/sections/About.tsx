@@ -19,7 +19,7 @@ const FEATURES: { icon: IconName; title: string; text: string }[] = [
   {
     icon: 'trending-up',
     title: 'Steady improvement',
-    text: 'Patients, measurable progress — helping students improve from where they currently stand.',
+    text: 'Patient, measurable progress — helping students improve from where they currently stand.',
   },
   {
     icon: 'graduation',
@@ -35,17 +35,17 @@ export function About() {
         eyebrow="About U++ Academy"
         title={
           <>
-            Coaching built on <span className="text-gradient-gold">concept clarity</span>, not shortcuts
+            Coaching built on <span className="text-pine-600">concept clarity</span>, not shortcuts
           </>
         }
-        description={`U++ Academy is based in ${LOCATION_LABEL}, Jharkhand. Director Umesh Kumar leads the academy with a focus on strong academic foundations and a supportive learning environment for students in Classes 1 to 10.`}
+        description={`U++ Academy is based in ${LOCATION_LABEL}, Jharkhand. Director Umesh Kumar leads the academy with a focus on strong academic foundations and a supportive learning environment for students in Classes 6 to 12.`}
       />
 
       <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2">
         {FEATURES.map((feature, index) => (
           <Reveal key={feature.title} delay={index * 100}>
-            <Card lift ring>
-              <CardIcon tone={index % 2 === 0 ? 'gold' : 'iris'}>
+            <Card>
+              <CardIcon tone={index % 2 === 0 ? 'gold' : 'pine'}>
                 <Icon name={feature.icon} />
               </CardIcon>
               <h3 className="mt-4 text-base font-bold text-slate-50 sm:mt-5 sm:text-lg">

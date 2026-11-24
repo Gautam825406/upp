@@ -7,23 +7,19 @@ import { Icon } from '@/components/ui/Icon';
 import { EnquiryForm } from '@/components/actions/EnquiryForm';
 import { Faq } from '@/components/sections/Faq';
 import { CtaBanner } from '@/components/sections/CtaBanner';
-import { BUSINESS, LOCATION_LABEL, TEL_HREF, whatsappHref } from '@/data/business';
-import { selectFaqs } from '@/data/faqs';
-
-const CONTACT_FAQ_IDS = [
-  'location', 'contact-umesh-kumar', 'chouparan-contact', 'admission', 'classes-1-10',
-] as const;
+import { BUSINESS, LOCATION_LABEL, TEL_HREF, SECONDARY_TEL_HREF, whatsappHref } from '@/data/business';
+import { selectFaqs, CONTACT_FAQ_IDS } from '@/data/faqs';
 
 export default function ContactPage() {
   const faqs = selectFaqs(CONTACT_FAQ_IDS);
 
   return (
-    <StructuredData>
+    <StructuredData faqs={faqs}>
       <Section>
         <Reveal>
           <span className="eyebrow">Contact &amp; Admission Enquiry</span>
           <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tightest text-slate-50 sm:text-6xl">
-            Get in touch with <span className="text-gradient-gold">U++ Academy</span>
+            Get in touch with <span className="text-pine-600">U++ Academy</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
             U++ Academy is based in {LOCATION_LABEL}. Call, message, or fill in the
@@ -52,6 +48,12 @@ export default function ContactPage() {
                       <a href={TEL_HREF} className="mt-1 block text-lg font-bold text-slate-50">
                         {BUSINESS.phone}
                       </a>
+                      <a
+                        href={SECONDARY_TEL_HREF}
+                        className="mt-1 block text-base font-semibold text-slate-300"
+                      >
+                        {BUSINESS.secondaryPhone}
+                      </a>
                       <p className="mt-1 text-sm text-slate-400">Click to call</p>
                     </div>
                   </div>
@@ -61,7 +63,7 @@ export default function ContactPage() {
               <Reveal delay={140}>
                 <Card>
                   <div className="flex items-start gap-4">
-                    <CardIcon tone="iris">
+                    <CardIcon tone="pine">
                       <Icon name="whatsapp" />
                     </CardIcon>
                     <div>
@@ -72,7 +74,7 @@ export default function ContactPage() {
                         rel="noopener noreferrer"
                         className="mt-1 block text-lg font-bold text-slate-50 underline"
                       >
-                        {BUSINESS.phone}
+                        {BUSINESS.whatsappPhone}
                       </a>
                       <p className="mt-1 text-sm text-slate-400">Opens WhatsApp chat</p>
                     </div>
@@ -83,7 +85,7 @@ export default function ContactPage() {
               <Reveal delay={200}>
                 <Card>
                   <div className="flex items-start gap-4">
-                    <CardIcon tone="aqua">
+                    <CardIcon tone="pine">
                       <Icon name="map-pin" />
                     </CardIcon>
                     <div>
@@ -95,7 +97,7 @@ export default function ContactPage() {
                         href={BUSINESS.mapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-1 inline-flex items-center gap-1 text-sm text-gold-400 underline"
+                        className="mt-1 inline-flex items-center gap-1 text-sm text-gold-600 underline"
                       >
                         View on Google Maps
                         <Icon name="external" className="h-3.5 w-3.5" />

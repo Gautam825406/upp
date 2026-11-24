@@ -1,7 +1,7 @@
 /**
  * Theme state.
  *
- * The site ships dark-first. Light mode is a custom-property swap on <html> (see
+ * The site ships light-first (paper). Dark mode is a custom-property swap on <html> (see
  * src/styles/index.css) rather than `dark:` variants, so switching the class re-themes every
  * component with no re-render of the tree.
  *
@@ -15,14 +15,14 @@ export type Theme = 'dark' | 'light';
 
 const STORAGE_KEY = 'upp-theme';
 
-/** Class applied to <html>. `.dark` is the default, so an unrecognised value reads as dark. */
+/** Class applied to <html>. `.light` is the default, so an unrecognised value reads as light. */
 const root = () => document.documentElement;
 
 function readTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return 'light';
   const stored = window.localStorage.getItem(STORAGE_KEY);
   if (stored === 'light' || stored === 'dark') return stored;
-  return root().classList.contains('light') ? 'light' : 'dark';
+  return root().classList.contains('dark') ? 'dark' : 'light';
 }
 
 function applyTheme(theme: Theme) {
@@ -33,7 +33,7 @@ function applyTheme(theme: Theme) {
   el.style.colorScheme = theme;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.setAttribute('content', theme === 'light' ? '#f8fafc' : '#0b1026');
+    meta.setAttribute('content', theme === 'light' ? '#faf6ec' : '#0f1a14');
   }
 }
 

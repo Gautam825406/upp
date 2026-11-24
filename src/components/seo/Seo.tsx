@@ -104,9 +104,12 @@ export function Seo({ title, description, canonicalPath, robots, ogType = 'websi
     setMeta('og:description', resolvedDescription, true);
     setMeta('og:url', canonical, true);
     setMeta('og:locale', 'en_IN', true);
+    setMeta('og:image', `${SITE_URL}/logo.jpg`, true);
+    setMeta('og:image:alt', 'U++ Academy — gold U++ with a graduation cap and open book', true);
 
-    // Twitter
-    setMeta('twitter:card', 'summary_large_image');
+    // Twitter (summary card: the logo is square, so a small square thumbnail fits it)
+    setMeta('twitter:card', 'summary');
+    setMeta('twitter:image', `${SITE_URL}/logo.jpg`);
     setMeta('twitter:title', resolvedTitle);
     setMeta('twitter:description', resolvedDescription);
 

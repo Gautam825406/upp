@@ -32,11 +32,12 @@ export function Faq({ faqs, eyebrow = 'FAQ', title = 'Frequently asked questions
             <Reveal key={faq.id} delay={0}>
               <details
                 open={isOpen}
-                className="group glass overflow-hidden transition-colors"
-                style={{ borderStyle: 'solid', borderWidth: 1, borderColor: isOpen ? 'rgba(255,194,75,0.25)' : 'rgba(255,255,255,0.08)' }}
+                className="group card-flat overflow-hidden transition-colors"
+                style={{ borderStyle: 'solid', borderWidth: 1, borderColor: isOpen ? 'rgb(var(--c-gold-500) / 0.45)' : 'rgb(var(--c-ink-700))' }}
               >
                 <summary
-                  className="faq-summary flex cursor-pointer items-center justify-between gap-4 px-5 py-5 transition-colors hover:bg-white/[0.03] sm:px-7"
+                  aria-expanded={isOpen}
+                  className="faq-summary flex cursor-pointer items-center justify-between gap-4 px-5 py-5 transition-colors hover:bg-ink-900 sm:px-7"
                   onClick={(event) => {
                     event.preventDefault();
                     setOpenId(isOpen ? null : faq.id);
@@ -49,12 +50,12 @@ export function Faq({ faqs, eyebrow = 'FAQ', title = 'Frequently asked questions
                     name="chevron-down"
                     className={cn(
                       'h-5 w-5 shrink-0 text-slate-400 transition-transform duration-300',
-                      isOpen && 'rotate-180 text-gold-400',
+                      isOpen && 'rotate-180 text-gold-600',
                     )}
                   />
                 </summary>
                 {isOpen && (
-                  <div className="border-t border-white/[0.06] px-5 py-5 text-sm leading-relaxed text-slate-400 sm:px-7 sm:text-[15px]">
+                  <div className="border-t border-ink-700 px-5 py-5 text-sm leading-relaxed text-slate-400 sm:px-7 sm:text-[15px]">
                     {faq.answer}
                   </div>
                 )}

@@ -26,7 +26,7 @@ export function WhatsAppButton({ children, className, variant = 'full', message 
       className={cn(VARIANTS[variant], className)}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Message ${BUSINESS.name} on WhatsApp (${BUSINESS.phone})`}
+      aria-label={`Message ${BUSINESS.name} on WhatsApp (${BUSINESS.whatsappPhone})`}
     >
       <Icon name="whatsapp" className="h-[18px] w-[18px]" />
       {children ?? 'WhatsApp Enquiry'}

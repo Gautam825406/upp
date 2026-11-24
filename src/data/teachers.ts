@@ -47,5 +47,5 @@ export const TEACHERS: Teacher[] = [
  * a stock face of someone who is not a real person.
  */
 export const TEACHER_PHOTOS: Record<string, string | undefined> = {
-  'umesh-kumar': '/umesh%20kumar.png',
+  'umesh-kumar': '/umesh-kumar.webp',
 };

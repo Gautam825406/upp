@@ -58,7 +58,13 @@ export function directorPerson(): Record<string, unknown> {
 
 /** Person nodes for every teacher we know about, ordered as in `TEACHERS`. */
 export function teacherPersons(): Record<string, unknown>[] {
-  return TEACHERS.map(() => directorPerson());
+  return TEACHERS.map((teacher) => ({
+    '@type': 'Person',
+    '@id': `${ORGANIZATION_ID}#${teacher.id}`,
+    name: teacher.name,
+    jobTitle: teacher.role,
+    worksFor: { '@id': ORGANIZATION_ID },
+  }));
 }
 
 /**
@@ -79,7 +85,9 @@ export function buildOrganizationSchema(asLocalBusiness = false): OrganizationJs
     address.postalCode = BUSINESS.address.postalCode;
   }
 
-  const sameAs: string[] = [BUSINESS.mapsUrl];
+  // `sameAs` links only to real claimed profiles. The Maps search URL is not a profile, so
+  // it is left out rather than presented as one.
+  const sameAs: string[] = [];
   // Only link the GBP URL when it is a real claimed profile — never a search placeholder.
   if (BUSINESS.hasVerifiedGoogleBusinessProfile) sameAs.push(BUSINESS.googleBusinessProfileUrl);
 

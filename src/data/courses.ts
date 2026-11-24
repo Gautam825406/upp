@@ -1,5 +1,5 @@
 /**
- * Course structure for U++ Academy — Classes 1 to 10 across JAC, CBSE and ICSE.
+ * Course structure for U++ Academy — Classes 6 to 12 across JAC, CBSE and ICSE.
  *
  * Everything here describes the class range and boards U++ Academy has confirmed. Subjects are
  * expressed generically ("all board subjects") because we were not told which specific subjects
@@ -9,7 +9,7 @@
 export interface CourseGroup {
   id: string;
   label: string;
-  /** Inclusive class range as numbers, used for rendering "Class 1 – 5". */
+  /** Inclusive class range as numbers, used for rendering "Class 6 – 10". */
   from: number;
   to: number;
   rangeLabel: string;
@@ -19,23 +19,8 @@ export interface CourseGroup {
 
 export const COURSE_GROUPS: CourseGroup[] = [
   {
-    id: 'primary',
-    label: 'Primary Foundation',
-    from: 1,
-    to: 5,
-    rangeLabel: 'Class 1 – 5',
-    summary:
-      'Early learning is where habits are formed. U++ Academy builds reading, writing and numeracy foundations so that young students stay confident in school.',
-    points: [
-      'Building core reading, writing and numeracy skills',
-      'Correcting early learning gaps before they widen',
-      'A calm, structured environment for younger students',
-      'Regular check-ins so parents know how progress is going',
-    ],
-  },
-  {
     id: 'middle',
-    label: 'Middle School',
+    label: 'Middle & Secondary',
     from: 6,
     to: 10,
     rangeLabel: 'Class 6 – 10',
@@ -114,7 +99,7 @@ export const FOCUS_AREAS = [
     id: 'weak-students',
     title: 'Weak students',
     description:
-      'Patients, targeted help for students who have fallen behind and need to rebuild confidence subject by subject.',
+      'Patient, targeted help for students who have fallen behind and need to rebuild confidence subject by subject.',
   },
   {
     id: 'concept-clarity',

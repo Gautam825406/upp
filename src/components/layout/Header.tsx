@@ -65,7 +65,7 @@ export function Header() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-300',
         scrolled
-          ? 'border-b border-white/[0.08] bg-ink-950/85 backdrop-blur-xl'
+          ? 'border-b border-ink-700 bg-ink-950'
           : 'border-b border-transparent bg-transparent',
       )}
     >
@@ -98,7 +98,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition-colors active:bg-white/[0.1] lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-ink-700 bg-ink-800 text-slate-200 transition-colors active:bg-ink-900 lg:hidden"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               {open ? (
@@ -115,14 +115,14 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-white/[0.08] bg-ink-950/95 backdrop-blur-xl lg:hidden"
+        className="max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-ink-700 bg-ink-950 lg:hidden"
       >
         <nav aria-label="Mobile" className="container-shell flex flex-col py-4">
           {NAV.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
-              className="rounded-lg px-3 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.06] hover:text-white"
+              className="rounded-lg px-3 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-ink-900 hover:text-slate-50"
               data-active={location?.pathname === link.to}
             >
               {link.label}

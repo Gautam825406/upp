@@ -1,16 +1,17 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0b1026" />
+    <meta name="theme-color" content="#faf6ec" />
 
     <!--
       Apply the saved theme before first paint.
 
       This has to run inline and synchronously, before the stylesheet paints, otherwise a returning
-      visitor who chose light mode would see a flash of the dark theme. Dark is the default, and
-      the markup below ships `class="dark"` so the no-JS path still renders correctly.
+      visitor who chose dark mode would see a flash of the light theme. Light is the default —
+      most parents read this on a phone in daylight — and the markup below ships `class="light"`
+      so the no-JS path still renders correctly.
     -->
     <script>
       (function () {
@@ -19,17 +20,17 @@
           var theme =
             stored === 'light' || stored === 'dark'
               ? stored
-              : window.matchMedia('(prefers-color-scheme: light)').matches
-                ? 'light'
-                : 'dark';
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
           var el = document.documentElement;
           el.classList.toggle('light', theme === 'light');
           el.classList.toggle('dark', theme === 'dark');
           el.style.colorScheme = theme;
           var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'light' ? '#f8fafc' : '#0b1026');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#faf6ec' : '#0f1a14');
         } catch (e) {
-          /* storage blocked — fall through to the dark default on the <html> tag */
+          /* storage blocked — fall through to the light default on the <html> tag */
         }
       })();
     </script>
@@ -38,15 +39,12 @@
       Primary SEO tags. The values below are the HOMEPAGE defaults so that the static HTML is
       already correct for crawlers even before JavaScript runs. Every route rewrites these
       through <Seo /> (client-side, on navigation) and scripts/prerender.mjs (build-time).
+      No keywords meta tag: search engines ignore it, and stuffing it reads as spam.
     -->
     <title>U++ Academy | Coaching in Maharajgunj, Madhygopali &amp; Chouparan</title>
     <meta
       name="description"
-      content="U++ Academy offers Class 1–10 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 9065792628."
-    />
-    <meta
-      name="keywords"
-      content="Best coaching institute in Maharajgunj, best tuition classes in Chouparan, coaching classes in Madhygopali, tuition classes near Maharajgunj, Class 1 to 10 coaching in Chouparan, JAC coaching in Maharajgunj, CBSE tuition in Chouparan, ICSE coaching near Madhygopali, Umesh Kumar teacher Maharajgunj, Gautam Keshri teacher"
+      content="U++ Academy offers Class 6–12 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 8862958656."
     />
     <meta name="author" content="U++ Academy" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
@@ -55,25 +53,27 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="U++ Academy" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:title" content="U++ Academy | Coaching in Maharajgunj, Madhygopali &amp; Chouparan" />
     <meta
       property="og:description"
-      content="U++ Academy offers Class 1–10 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 9065792628."
+      content="U++ Academy offers Class 6–12 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 8862958656."
     />
     <meta property="og:url" content="https://uppacademy.in/" />
-    <meta property="fb:pages" content="" />
+    <meta property="og:image" content="https://uppacademy.in/logo.jpg" />
+    <meta property="og:image:alt" content="U++ Academy — gold U++ with a graduation cap and open book" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="https://uppacademy.in/logo.jpg" />
     <meta name="twitter:title" content="U++ Academy | Coaching in Maharajgunj, Madhygopali &amp; Chouparan" />
     <meta
       name="twitter:description"
-      content="U++ Academy offers Class 1–10 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 9065792628."
+      content="U++ Academy offers Class 6–12 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 8862958656."
     />
 
     <!-- Icons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>

@@ -11,29 +11,29 @@ const BOARD_ICONS: Record<string, IconName> = {
   ICSE: 'book',
 };
 
-const BOARD_TONES: Record<string, 'gold' | 'iris' | 'aqua'> = {
+const BOARD_TONES: Record<string, 'gold' | 'pine'> = {
   JAC: 'gold',
-  CBSE: 'iris',
-  ICSE: 'aqua',
+  CBSE: 'pine',
+  ICSE: 'pine',
 };
 
 export function Boards() {
   return (
     <Section id="boards" subtle>
       <SectionHeading
-        eyebrow="Classes 1 to 12 · All boards"
+        eyebrow="Classes 6 to 12 · All boards"
         title={
           <>
-            Coaching for <span className="text-gradient-gold">JAC, CBSE and ICSE</span> students
+            Coaching for <span className="text-pine-600">JAC, CBSE and ICSE</span> students
           </>
         }
-        description="U++ Academy runs coaching across the full school range from Class 1 to Class 12, supporting students from Jharkhand Academic Council, CBSE and ICSE boards."
+        description="U++ Academy runs coaching across the full school range from Class 6 to Class 12, supporting students from Jharkhand Academic Council, CBSE and ICSE boards."
       />
 
       <div className="mt-12 grid gap-5 sm:grid-cols-3">
         {BOARDS.map((board, index) => (
           <Reveal key={board.code} delay={index * 100}>
-            <Card lift ring>
+            <Card>
               <CardIcon tone={BOARD_TONES[board.code] ?? 'gold'}>
                 <Icon name={BOARD_ICONS[board.code] ?? 'book'} />
               </CardIcon>
@@ -69,13 +69,13 @@ export function Boards() {
             Class groups
           </h3>
         </Reveal>
-        {/* Four groups (1-5, 6-10, 11-12 Arts, 11-12 Science): 1-up on phones, 2-up on tablets,
-            4-up on desktop so the row never ends ragged. */}
-        <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Three groups (6-10, 11-12 Arts, 11-12 Science): 1-up on phones, 2-up on tablets,
+            3-up on desktop so the row never ends ragged. */}
+        <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {COURSE_GROUPS.map((group, index) => (
             <Reveal key={group.id} delay={index * 100}>
-              <Card lift strong className="h-full">
-                <span className="inline-flex items-center rounded-full border border-gold-500/25 bg-gold-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400">
+              <Card className="h-full">
+                <span className="inline-flex items-center rounded-md border border-gold-500/30 bg-gold-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-600">
                   {group.rangeLabel}
                 </span>
                 <h4 className="mt-4 text-lg font-bold text-slate-50">{group.label}</h4>

@@ -11,7 +11,7 @@ import { Icon } from '@/components/ui/Icon';
 export function MobileActionBar() {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-900/95 px-3 py-2.5 backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-700 bg-ink-900/95 px-3 py-2.5  lg:hidden"
       style={{ paddingBottom: 'max(0.625rem, env(safe-area-inset-bottom))' }}
       role="group"
       aria-label="Contact U++ Academy"

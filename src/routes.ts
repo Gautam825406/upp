@@ -74,7 +74,7 @@ export interface PageMeta {
 /** Homepage metadata, exactly as specified. */
 export const HOME_TITLE = `${BUSINESS.name} | Coaching in Maharajgunj, Madhygopali & Chouparan`;
 export const HOME_DESCRIPTION =
-  'U++ Academy offers Class 1–10 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 9065792628.';
+  'U++ Academy offers Class 6–12 coaching for JAC, CBSE and ICSE students in Madhygopali, Maharajgunj, serving nearby Chouparan. Call 8862958656.';
 
 export const PAGES: PageMeta[] = [
   {
@@ -83,10 +83,10 @@ export const PAGES: PageMeta[] = [
     title: HOME_TITLE,
     description: HOME_DESCRIPTION,
     keywords: [
-      'Best coaching institute in Maharajgunj',
-      'Best tuition classes in Chouparan',
+      'Coaching institute in Maharajgunj',
+      'Tuition classes in Chouparan',
       'Coaching classes in Madhygopali',
-      'Class 1 to 10 coaching',
+      'Class 6 to 12 coaching',
       'JAC CBSE ICSE coaching Maharajgunj',
       'Umesh Kumar U++ Academy',
     ],
@@ -96,14 +96,13 @@ export const PAGES: PageMeta[] = [
     path: '/coaching-in-maharajgunj',
     title: 'Coaching Classes in Maharajgunj | U++ Academy',
     description:
-      'Coaching classes in Maharajgunj for Class 1 to 10 covering JAC, CBSE and ICSE. Personalised academic support and admissions at U++ Academy — call +91 9065792628.',
+      'Coaching classes in Maharajgunj for Class 6 to 12 covering JAC, CBSE and ICSE. Personalised academic support and admissions at U++ Academy — call +91 8862958656.',
     keywords: [
-      'Best coaching institute in Maharajgunj',
+      'Coaching institute in Maharajgunj',
       'Tuition classes near Maharajgunj',
       'JAC coaching in Maharajgunj',
       'Umesh Kumar teacher Maharajgunj',
-      'Experienced teachers in Maharajgunj',
-      'Class 1 to 10 coaching Maharajgunj',
+      'Class 6 to 12 coaching Maharajgunj',
     ],
     breadcrumb: [{ name: 'Home', path: '/' }, { name: 'Coaching in Maharajgunj' }],
   },
@@ -112,10 +111,10 @@ export const PAGES: PageMeta[] = [
     path: '/tuition-in-chouparan',
     title: 'Tuition Classes Near Chouparan | U++ Academy',
     description:
-      'Looking for tuition classes near Chouparan? Students and parents from Chouparan can enquire about Class 1 to 10 coaching at U++ Academy, Madhygopali, Maharajgunj. Call +91 9065792628.',
+      'Looking for tuition classes near Chouparan? Students and parents from Chouparan can enquire about Class 6 to 12 coaching at U++ Academy, Madhygopali, Maharajgunj. Call +91 8862958656.',
     keywords: [
-      'Best tuition classes in Chouparan',
-      'Class 1 to 10 coaching in Chouparan',
+      'Tuition classes in Chouparan',
+      'Class 6 to 12 coaching in Chouparan',
       'CBSE tuition in Chouparan',
       'Tuition classes near Chouparan',
       'Coaching for students from Chouparan',
@@ -127,7 +126,7 @@ export const PAGES: PageMeta[] = [
     path: '/coaching-in-madhygopali',
     title: 'Coaching Classes in Madhygopali | U++ Academy',
     description:
-      'U++ Academy is based in Madhygopali, Maharajgunj — coaching for Class 1 to 10 in JAC, CBSE and ICSE with concept clarity and special attention for weak students. Call +91 9065792628.',
+      'U++ Academy is based in Madhygopali, Maharajgunj — coaching for Class 6 to 12 in JAC, CBSE and ICSE with concept clarity and special attention for weak students. Call +91 8862958656.',
     keywords: [
       'Coaching classes in Madhygopali',
       'ICSE coaching near Madhygopali',
@@ -140,11 +139,11 @@ export const PAGES: PageMeta[] = [
   {
     key: 'courses',
     path: '/courses',
-    title: 'Classes 1 to 10 Coaching | JAC, CBSE & ICSE | U++ Academy',
+    title: 'Classes 6 to 12 Coaching | JAC, CBSE & ICSE | U++ Academy',
     description:
-      'U++ Academy runs coaching for Class 1 to 10 supporting JAC, CBSE and ICSE students in Madhygopali, Maharajgunj. Concept clarity, personalised attention and academic improvement.',
+      'U++ Academy runs coaching for Class 6 to 12 supporting JAC, CBSE and ICSE students in Madhygopali, Maharajgunj. Concept clarity, personalised attention and academic improvement.',
     keywords: [
-      'Class 1 to 10 coaching Maharajgunj',
+      'Class 6 to 12 coaching Maharajgunj',
       'JAC coaching Maharajgunj',
       'CBSE coaching Madhygopali',
       'ICSE coaching Madhygopali',
@@ -157,12 +156,11 @@ export const PAGES: PageMeta[] = [
     path: '/teachers',
     title: 'Meet Our Teachers | U++ Academy, Maharajgunj',
     description:
-      'Meet the U++ Academy teaching team: Director Umesh Kumar and the teaching team supporting the academy student-focused learning mission in Maharajgunj, Madhygopali and Chouparan.',
+      'U++ Academy is led by Director Umesh Kumar in Maharajgunj, Madhygopali, serving students from Chouparan. Call +91 8862958656 to ask about coaching for your child.',
     keywords: [
       'U++ Academy teachers',
       'Umesh Kumar teacher Maharajgunj',
       'Umesh Kumar U++ Academy',
-      'Experienced teachers in Maharajgunj',
     ],
     breadcrumb: [{ name: 'Home', path: '/' }, { name: 'Meet Our Teachers' }],
   },
@@ -171,7 +169,7 @@ export const PAGES: PageMeta[] = [
     path: '/contact',
     title: 'Contact U++ Academy | Admission Enquiry, Maharajgunj',
     description:
-      'Contact U++ Academy in Madhygopali, Maharajgunj for admission enquiries. Call +91 9065792628 or message on WhatsApp about Class 1 to 10 coaching for JAC, CBSE and ICSE students.',
+      'Contact U++ Academy in Madhygopali, Maharajgunj for admission enquiries. Call +91 8862958656 or message on WhatsApp about Class 6 to 12 coaching for JAC, CBSE and ICSE students.',
     keywords: [
       'U++ Academy contact',
       'Coaching admission enquiry Maharajgunj',

@@ -13,7 +13,7 @@ import { BUSINESS } from '@/data/business';
 const PROMO_VIDEO = 'https://youtube.com/shorts/3FjF-WYljbs';
 
 const HIGHLIGHTS = [
-  'Classes 1 to 10',
+  'Classes 6 to 12',
   'JAC · CBSE · ICSE',
   'Concept-focused teaching',
   'Personal attention per student',
@@ -37,7 +37,7 @@ export function PromoSection() {
 
               <h2 className="mt-5 text-[1.75rem] font-bold leading-[1.15] tracking-tight sm:mt-6 sm:text-4xl">
                 Watch a{' '}
-                <span className="text-gradient-gold">class at U++ Academy</span>
+                <span className="text-pine-600">class at U++ Academy</span>
               </h2>
 
               <p className="mt-4 text-[15px] leading-relaxed text-slate-400 sm:text-lg">
@@ -49,7 +49,7 @@ export function PromoSection() {
                 {HIGHLIGHTS.map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-slate-300">
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-gold-500/25 bg-gold-500/10">
-                      <Icon name="check" className="h-3 w-3 text-gold-400" />
+                      <Icon name="check" className="h-3 w-3 text-gold-600" />
                     </span>
                     {item}
                   </li>

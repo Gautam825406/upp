@@ -28,7 +28,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             <Fragment key={`${item.name}-${index}`}>
               <li>
                 {item.path && !isLast ? (
-                  <Link to={item.path} className="text-slate-400 transition-colors hover:text-gold-400">
+                  <Link to={item.path} className="text-slate-400 transition-colors hover:text-gold-600">
                     {item.name}
                   </Link>
                 ) : (
