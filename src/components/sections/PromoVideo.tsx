@@ -14,6 +14,13 @@
  * the embed itself was working. So the iframe here is plain and untouched by React, and mute control
  * is sent over `postMessage`, which mutates no DOM and cannot desynchronise the tree.
  *
+ * POSTMESSAGE TARGET — THIS IS THE BUG THAT KILLED SOUND (25 Nov 2026)
+ * The embed lives on `youtube-nocookie.com`, so API commands MUST be posted with targetOrigin
+ * `https://www.youtube-nocookie.com`. An earlier version posted them to `https://www.youtube.com`
+ * and the browser discarded every one (targetOrigin mismatch) — the video played, but "Tap for
+ * sound" and the first-tap auto-unmute silently did nothing. The message *listener* below still
+ * accepts both origins, because the embed can report from either.
+ *
  * AUTOPLAY — MUTED, SO IT ACTUALLY PLAYS ON LOAD
  * The video must be visibly playing the moment the page loads, on phones as well as desktops.
  * Browsers block autoplay WITH sound everywhere until the visitor interacts, so asking for
@@ -61,13 +68,15 @@ export function PromoVideo({ video, className }: PromoVideoProps) {
 
   const videoId = parseYouTubeId(video);
 
-  /** Send one IFrame API command to the embed over postMessage (no DOM mutation). */
+  /** Send one IFrame API command to the embed over postMessage (no DOM mutation).
+   * The target MUST be the embed's own origin (youtube-nocookie.com) — posting to
+   * youtube.com gets silently discarded by the browser. */
   const sendCommand = useCallback((func: string, args: (string | number)[]) => {
     const frame = frameRef.current?.contentWindow;
     if (!frame) return;
     frame.postMessage(
       JSON.stringify({ event: 'command', func, args }),
-      'https://www.youtube.com',
+      'https://www.youtube-nocookie.com',
     );
   }, []);
 
@@ -180,12 +189,25 @@ export function PromoVideo({ video, className }: PromoVideoProps) {
         className="absolute inset-0 h-full w-full border-0"
       />
 
+      {/* Tap-catcher over the video while it is still muted. Taps inside a cross-origin
+          iframe never reach this page, so without this layer a tap on the video itself
+          would never trigger the auto-unmute — only taps outside the video would. The
+          layer vanishes once sound is on, so later taps reach the player and play/pause
+          the video as normal. */}
+      {isMuted && (
+        <div
+          aria-hidden="true"
+          onPointerDown={enableSound}
+          className="absolute inset-0 z-10 cursor-pointer bg-transparent"
+        />
+      )}
+
       {/* Our own sound control, in the site's design — YouTube's control bar is hidden
-          (controls=0), so the visitor never sees YouTube's player furniture. Tapping the
-          video itself still plays/pauses it. The wrapper ignores pointer events so taps
-          pass through to the video everywhere except on the button itself. */}
-      {!reducedMotion && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-3 z-10 flex justify-center">
+          (controls=0), so the visitor never sees YouTube's player furniture. The wrapper
+          ignores pointer events so taps pass through to the video everywhere except on
+          the button itself. */}
+      {(
+        <div className="pointer-events-none absolute inset-x-0 bottom-3 z-20 flex justify-center">
           <button
             type="button"
             onClick={toggleSound}
