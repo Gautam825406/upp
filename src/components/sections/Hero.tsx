@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Reveal } from '@/components/ui/Reveal';
 import { CallButton } from '@/components/actions/CallButton';
 import { WhatsAppButton } from '@/components/actions/WhatsAppButton';
@@ -52,13 +53,25 @@ export function Hero() {
               </p>
             </Reveal>
 
-            {/* CTAs show on every screen size: most parents visit on a phone, and the
-                sticky bottom bar is a shortcut, not a substitute for a visible next step. */}
-            <Reveal delay={300}>
+            {/* Desktop only: on phones the sticky bottom bar already carries Call and
+                WhatsApp, so showing the same two big buttons in the hero is a duplicate.
+                On mobile the hero keeps a single quiet next step instead — a link to the
+                courses — and the sticky bar stays the way to call or message. */}
+            <Reveal delay={300} className="hidden lg:block">
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <WhatsAppButton>WhatsApp Enquiry</WhatsAppButton>
                 <CallButton>Call {BUSINESS.phone}</CallButton>
               </div>
+            </Reveal>
+
+            <Reveal delay={300} className="lg:hidden">
+              <Link
+                to="/courses"
+                className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-600 underline decoration-gold-600/40 underline-offset-4 transition-colors hover:text-slate-50"
+              >
+                Explore Class 6–12 courses
+                <span aria-hidden="true">→</span>
+              </Link>
             </Reveal>
 
             <Reveal delay={400}>
