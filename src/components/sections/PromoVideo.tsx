@@ -19,11 +19,22 @@
  * Browsers block autoplay WITH sound everywhere until the visitor interacts, so asking for
  * audible autoplay (`mute=0`) means the video sits paused on most first visits — exactly the
  * "video not working on load" failure. Muted autoplay (`mute=1`) is the only autoplay browsers
- * reliably allow, so the embed starts muted and playing on load, and a prominent
- * "Tap for sound" button is shown from the start so the visitor can unmute in one tap.
+ * reliably allow. There is NO code, parameter or trick that makes a browser play sound on load
+ * before the visitor touches the page — Chrome, Safari and Firefox all enforce this, on every
+ * website. So this component does the closest thing that is actually possible: the video starts
+ * muted and playing on load, and sound switches on the moment the visitor does anything on the
+ * page (tap, click or key press anywhere), or taps the sound button.
  * `mute=0` is NOT used: the `mute` URL parameter only ever *enables* mute; there is no value
  * that un-mutes an already-muted embed, so starting muted would mean silent everywhere if we
- * relied on the URL alone — unmuting is done via postMessage (`unMute`) when the visitor taps.
+ * relied on the URL alone — unmuting is done via postMessage (`unMute`) after interaction.
+ *
+ * NOT LOOKING LIKE YOUTUBE
+ * `controls=0` hides YouTube's own control bar, progress bar and buttons, and `modestbranding=1`
+ * removes the YouTube logo from the chrome, so what the visitor sees is just the video itself
+ * with this site's own sound button on top — no YouTube player furniture. Two limits remain,
+ * both imposed by the embed itself: hovering the video can still show YouTube's title bar at
+ * the top, and the video is still served by YouTube. Removing those entirely needs the video
+ * file hosted on this site instead of a YouTube embed (then the player is 100% ours).
  *
  * Under `prefers-reduced-motion` autoplay is suppressed entirely and the video renders paused.
  */
@@ -44,38 +55,65 @@ export function PromoVideo({ video, className }: PromoVideoProps) {
   const reducedMotion = useReducedMotion();
 
   const frameRef = useRef<HTMLIFrameElement>(null);
-  // Shown from the start (not after a delay): the video autoplays muted by design, so the
-  // visitor needs the unmute action visible immediately, on every load.
-  const [showSoundButton, setShowSoundButton] = useState(!reducedMotion);
+  // The embed starts muted (browsers allow no other autoplay), so the visitor needs the
+  // sound control visible immediately, on every load.
+  const [isMuted, setIsMuted] = useState(true);
 
   const videoId = parseYouTubeId(video);
 
-  /**
-   * Ask the embed to unmute and play. Sent as a postMessage command rather than through the
-   * IFrame API's `YT.Player`, because that would mean letting the API own this DOM node — see the
-   * design note in the file header.
-   */
-  const enableSound = useCallback(() => {
+  /** Send one IFrame API command to the embed over postMessage (no DOM mutation). */
+  const sendCommand = useCallback((func: string, args: (string | number)[]) => {
     const frame = frameRef.current?.contentWindow;
     if (!frame) return;
     frame.postMessage(
-      JSON.stringify({ event: 'command', func: 'unMute', args: [''] }),
+      JSON.stringify({ event: 'command', func, args }),
       'https://www.youtube.com',
     );
-    frame.postMessage(
-      JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
-      'https://www.youtube.com',
-    );
-    frame.postMessage(
-      JSON.stringify({ event: 'command', func: 'playVideo', args: [''] }),
-      'https://www.youtube.com',
-    );
-    setShowSoundButton(false);
   }, []);
 
   /**
-   * The embed posts a `infoDelivery` message whenever its state changes. If we ever see it playing
-   * with audio, the sound button is unnecessary — hide it.
+   * Ask the embed to unmute and play. Called from the sound button and from the first
+   * interaction anywhere on the page — sound is only allowed after the visitor acts.
+   */
+  const enableSound = useCallback(() => {
+    sendCommand('unMute', ['']);
+    sendCommand('setVolume', [100]);
+    sendCommand('playVideo', ['']);
+    setIsMuted(false);
+  }, [sendCommand]);
+
+  /** Mute again (keeps playing). */
+  const disableSound = useCallback(() => {
+    sendCommand('mute', ['']);
+    setIsMuted(true);
+  }, [sendCommand]);
+
+  const toggleSound = useCallback(() => {
+    if (isMuted) enableSound();
+    else disableSound();
+  }, [isMuted, enableSound, disableSound]);
+
+  /**
+   * Sound on at the first tap / click / key press anywhere on the page. This is the closest
+   * browsers allow to "sound on load": the video is already playing muted, and the first
+   * thing the visitor does — scrolling, tapping a link, anything — turns the sound on.
+   * Runs once; the sound button stays available for muting again.
+   */
+  useEffect(() => {
+    if (reducedMotion) return;
+    const onFirstInteraction = () => enableSound();
+    window.addEventListener('pointerdown', onFirstInteraction, { once: true });
+    window.addEventListener('keydown', onFirstInteraction, { once: true });
+    return () => {
+      window.removeEventListener('pointerdown', onFirstInteraction);
+      window.removeEventListener('keydown', onFirstInteraction);
+    };
+  }, [reducedMotion, enableSound]);
+
+  /**
+   * The embed posts an `infoDelivery` message whenever its state changes. Track the real
+   * mute state so the sound button always shows the truth (e.g. if the visitor mutes from
+   * the keyboard, or the embed reports itself unmuted).
    */
   useEffect(() => {
     function onMessage(event: MessageEvent) {
@@ -91,8 +129,8 @@ export function PromoVideo({ video, className }: PromoVideoProps) {
           event?: string;
           info?: { playerState?: number; isMuted?: boolean };
         };
-        if (payload.info?.playerState === 1 && payload.info.isMuted === false) {
-          setShowSoundButton(false);
+        if (typeof payload.info?.isMuted === 'boolean') {
+          setIsMuted(payload.info.isMuted);
         }
       } catch {
         // Not one of ours — ignore.
@@ -134,7 +172,7 @@ export function PromoVideo({ video, className }: PromoVideoProps) {
     >
       <iframe
         ref={frameRef}
-        src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=${reducedMotion ? 0 : 1}&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`}
+        src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=${reducedMotion ? 0 : 1}&mute=1&loop=1&playlist=${videoId}&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`}
         title="U++ Academy — see a class in action"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
@@ -142,17 +180,23 @@ export function PromoVideo({ video, className }: PromoVideoProps) {
         className="absolute inset-0 h-full w-full border-0"
       />
 
-      {/* The video autoplays muted by design, so this is shown from the start — the one
-          action that gets sound. Hidden once the embed reports it is playing unmuted. */}
-      {showSoundButton && !reducedMotion && (
-        <button
-          type="button"
-          onClick={enableSound}
-          className="absolute inset-x-0 bottom-16 z-10 mx-auto flex w-[calc(100%-2rem)] max-w-xs items-center justify-center gap-2 rounded-lg border border-ink-700 bg-ink-800 px-4 py-3 text-sm font-semibold text-gold-600 shadow-card transition-transform active:scale-[0.98]"
-        >
-          <Icon name="volume" className="h-4 w-4" />
-          Tap for sound
-        </button>
+      {/* Our own sound control, in the site's design — YouTube's control bar is hidden
+          (controls=0), so the visitor never sees YouTube's player furniture. Tapping the
+          video itself still plays/pauses it. The wrapper ignores pointer events so taps
+          pass through to the video everywhere except on the button itself. */}
+      {!reducedMotion && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-3 z-10 flex justify-center">
+          <button
+            type="button"
+            onClick={toggleSound}
+            aria-pressed={!isMuted}
+            aria-label={isMuted ? 'Turn sound on' : 'Mute the video'}
+            className="pointer-events-auto flex items-center justify-center gap-2 rounded-lg border border-ink-700 bg-ink-800 px-4 py-3 text-sm font-semibold text-gold-600 shadow-card transition-transform active:scale-[0.98]"
+          >
+            <Icon name={isMuted ? 'volume' : 'volume-off'} className="h-4 w-4" />
+            {isMuted ? 'Tap for sound' : 'Mute'}
+          </button>
+        </div>
       )}
 
       {/* No "Watch on YouTube" link anywhere here: the video plays inside this website only.
